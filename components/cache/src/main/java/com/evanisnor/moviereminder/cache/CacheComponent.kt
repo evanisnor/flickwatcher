@@ -2,8 +2,12 @@ package com.evanisnor.moviereminder.cache
 
 import dagger.Component
 
-@CacheScope
-@Component
+
+@Component(
+    modules = [
+        CacheModule::class
+    ]
+)
 interface CacheComponent {
 
     fun getCache(): Cache
