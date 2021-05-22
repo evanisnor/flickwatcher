@@ -23,6 +23,8 @@ class MovieReminderApp : Application() {
 
         val mainComponent = DaggerMainComponent.builder()
             .cacheComponent(
+                // This seems like a hack to avoid adding a gradle dependency
+                // on the Network module.
                 CacheComponent.create(this)
             ).build()
 

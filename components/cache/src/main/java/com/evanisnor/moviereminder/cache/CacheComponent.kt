@@ -19,6 +19,9 @@ interface CacheComponent {
 
     companion object {
 
+        // Hack create method.
+        // Exists to avoid requiring a gradle dependency on the Network module.
+        // Necessary because this component has a Builder (not a no-arg component)
         fun create(context: Context) = DaggerCacheComponent.builder()
             .context(context)
             .networkComponent(DaggerNetworkComponent.create())
