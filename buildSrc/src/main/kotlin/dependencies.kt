@@ -1,7 +1,7 @@
 object Build {
 
     object Android {
-        const val gradlePlugin = "com.android.tools.build:gradle:7.0.0-beta01"
+        const val gradlePlugin = "com.android.tools.build:gradle:7.0.0-beta02"
     }
 
     object Kotlin {
@@ -17,6 +17,11 @@ object Dependencies {
         const val coreKtx = "androidx.core:core-ktx:1.5.0"
         const val appcompat = "androidx.appcompat:appcompat:1.3.0"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.4"
+
+        const val roomVersion = "2.3.0"
+        const val room = "androidx.room:room-runtime:$roomVersion"
+        const val roomCompiler = "androidx.room:room-compiler:$roomVersion"
+        const val roomKtx = "androidx.room:room-ktx:$roomVersion"
     }
 
     object Google {
@@ -34,6 +39,14 @@ object Dependencies {
         private const val retrofitVersion = "2.9.0"
         const val retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
         const val converterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+    }
+
+    object Jetbrains {
+        private const val coroutinesVersion = "1.5.0"
+        const val coroutinesCore =
+            "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+        const val coroutinesAndroid =
+            "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     }
 
 }

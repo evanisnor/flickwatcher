@@ -35,13 +35,18 @@ android {
 }
 
 dependencies {
-    implementation(projects.shared.model)
     implementation(projects.components.network)
 
     implementation(Dependencies.Google.Dagger.dagger)
     kapt(Dependencies.Google.Dagger.daggerCompiler)
 
     implementation(Dependencies.Square.retrofit)
+    implementation(Dependencies.Jetbrains.coroutinesCore)
+    implementation(Dependencies.Jetbrains.coroutinesAndroid)
+
+    implementation(Dependencies.AndroidX.room)
+    implementation(Dependencies.AndroidX.roomKtx)
+    kapt(Dependencies.AndroidX.roomCompiler)
 
     testImplementation(TestDependencies.junit)
     androidTestImplementation(TestDependencies.AndroidX.junitExt)

@@ -1,7 +1,9 @@
 package com.evanisnor.moviereminder
 
+import android.app.Activity
 import android.app.Application
-import android.util.Log
+import android.os.Bundle
+import android.os.StrictMode
 import com.evanisnor.moviereminder.cache.Cache
 import com.evanisnor.moviereminder.cache.DaggerCacheComponent
 import javax.inject.Inject
@@ -15,17 +17,25 @@ class MovieReminderApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
-        DaggerMainComponent.builder()
-            .cacheComponent(
-                DaggerCacheComponent.create()
-            ).build()
-            .inject(this)
-
-        cache.loadTrendingMovies {
-            for (movie in it) {
-                Log.i("MovieReminderApp", movie.title)
-            }
+        if (BuildConfig.DEBUG) {
+            StrictMode.enableDefaults()
         }
+
+        val mainComponent = DaggerMainComponent.builder()
+            .cacheComponent(
+                DaggerCacheComponent.builder()
+                    .context(this)
+                    .build()
+            ).build()
+
+        mainComponent.inject(this)
+
+        registerActivityLifecycleCallbacks(object : ActivityCallbacks() {
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                if (activity is MainActivity) {
+                    mainComponent.inject(activity)
+                }
+            }
+        })
     }
 }

@@ -12,6 +12,7 @@ import javax.inject.Singleton
 )
 interface MainComponent {
 
+    fun inject(mainActivity: MainActivity)
     fun inject(movieReminderApp: MovieReminderApp)
 
 }

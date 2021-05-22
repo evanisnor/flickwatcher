@@ -35,6 +35,17 @@ android {
 }
 
 dependencies {
+    implementation(projects.components.cache)
+
     implementation(Dependencies.Google.Dagger.dagger)
     kapt(Dependencies.Google.Dagger.daggerCompiler)
+
+    implementation(Dependencies.AndroidX.coreKtx)
+    implementation(Dependencies.AndroidX.appcompat)
+    implementation(Dependencies.AndroidX.constraintLayout)
+    implementation(Dependencies.Google.material)
+
+    testImplementation(TestDependencies.junit)
+    androidTestImplementation(TestDependencies.AndroidX.junitExt)
+    androidTestImplementation(TestDependencies.AndroidX.espressoCore)
 }

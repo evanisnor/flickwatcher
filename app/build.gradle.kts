@@ -37,11 +37,15 @@ android {
 }
 
 dependencies {
-    implementation(projects.shared.model)
     implementation(projects.components.cache)
+
+    implementation(projects.features.reminder)
 
     implementation(Dependencies.Google.Dagger.dagger)
     kapt(Dependencies.Google.Dagger.daggerCompiler)
+
+    implementation(Dependencies.Jetbrains.coroutinesCore)
+    implementation(Dependencies.Jetbrains.coroutinesAndroid)
 
     implementation(Dependencies.AndroidX.coreKtx)
     implementation(Dependencies.AndroidX.appcompat)

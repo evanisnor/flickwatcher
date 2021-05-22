@@ -1,36 +1,21 @@
 package com.evanisnor.moviereminder.network
 
-import com.evanisnor.moviereminder.model.Results
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.evanisnor.moviereminder.network.model.Page
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 @NetworkScope
 class TheMovieDbController @Inject constructor(
+    private val dispatcher: CoroutineDispatcher,
     private val theMovieDbService: TheMovieDbService
 ) {
 
-    fun getTrendingMovies(
-        onSuccess: (Results?) -> Unit,
-        onFailure: (Throwable) -> Unit
-    ) {
-        theMovieDbService.getTrendingMoviesToday()
-            .enqueue(object : Callback<Results> {
-                override fun onResponse(
-                    call: Call<Results>,
-                    response: Response<Results>
-                ) {
-                    onSuccess(response.body())
-                }
+    suspend fun getTrendingMovies(): Flow<Page?> = flow {
+        val response = theMovieDbService.getTrendingMoviesToday()
+        emit(response.body())
+    }.flowOn(dispatcher)
 
-                override fun onFailure(
-                    call: Call<Results>,
-                    t: Throwable
-                ) {
-                    onFailure(t)
-                }
-
-            })
-    }
 }

@@ -1,8 +1,11 @@
 package com.evanisnor.moviereminder.network
 
 import com.evanisnor.moviereminder.network.interceptors.AuthorizationInterceptor
+import com.evanisnor.moviereminder.network.interceptors.NetworkLoggerInterceptor
+import com.evanisnor.moviereminder.network.interceptors.TrafficStatsInterceptor
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -11,10 +14,17 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 object NetworkModule {
 
     @Provides
+    fun dispatcher() = Dispatchers.IO
+
+    @Provides
     fun okHttpClient(
+        trafficStatsInterceptor: TrafficStatsInterceptor,
+        networkLoggerInterceptor: NetworkLoggerInterceptor,
         authorizationInterceptor: AuthorizationInterceptor
     ) = OkHttpClient.Builder()
-        .addInterceptor(authorizationInterceptor)
+        .addInterceptor(trafficStatsInterceptor)
+        .addNetworkInterceptor(networkLoggerInterceptor)
+        .addNetworkInterceptor(authorizationInterceptor)
         .build()
 
     @Provides
