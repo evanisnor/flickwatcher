@@ -5,7 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import android.os.StrictMode
 import com.evanisnor.moviereminder.cache.Cache
-import com.evanisnor.moviereminder.cache.DaggerCacheComponent
+import com.evanisnor.moviereminder.cache.CacheComponent
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,9 +23,7 @@ class MovieReminderApp : Application() {
 
         val mainComponent = DaggerMainComponent.builder()
             .cacheComponent(
-                DaggerCacheComponent.builder()
-                    .context(this)
-                    .build()
+                CacheComponent.create(this)
             ).build()
 
         mainComponent.inject(this)

@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-@NetworkScope
 class TheMovieDbController @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
     private val theMovieDbService: TheMovieDbService

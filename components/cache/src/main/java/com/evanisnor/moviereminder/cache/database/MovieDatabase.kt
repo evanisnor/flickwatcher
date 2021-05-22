@@ -6,6 +6,7 @@ import com.evanisnor.moviereminder.cache.model.Movie
 
 @Database(
     version = 1,
+    exportSchema = false,
     entities = [
         Movie::class
     ]
