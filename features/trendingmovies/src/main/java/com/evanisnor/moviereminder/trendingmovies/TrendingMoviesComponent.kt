@@ -1,14 +1,24 @@
 package com.evanisnor.moviereminder.trendingmovies
 
-import dagger.Subcomponent
+import com.evanisnor.moviereminder.cache.CacheComponent
+import com.evanisnor.moviereminder.libraries.maincomponent.MainComponent
+import dagger.Component
 
 @TrendingMoviesScope
-@Subcomponent
+@Component(
+    dependencies = [
+        MainComponent::class,
+        CacheComponent::class
+    ]
+)
 interface TrendingMoviesComponent {
 
-    @Subcomponent.Builder
+    @Component.Builder
     interface Builder {
+        fun mainComponent(mainComponent: MainComponent): Builder
+        fun cacheComponent(cacheComponent: CacheComponent): Builder
         fun build(): TrendingMoviesComponent
     }
 
+    fun inject(trendingMoviesActivity: TrendingMoviesActivity)
 }

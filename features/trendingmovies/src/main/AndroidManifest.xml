@@ -6,8 +6,7 @@
         <activity
             android:name=".TrendingMoviesActivity"
             android:exported="true"
-            android:label="@string/title_activity_trending_movies"
-            android:theme="@style/Theme.Moviereminder.NoActionBar" />
+            android:label="@string/title_activity_trending_movies" />
     </application>
 
 </manifest>

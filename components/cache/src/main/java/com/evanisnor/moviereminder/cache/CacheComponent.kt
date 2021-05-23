@@ -6,7 +6,7 @@ import com.evanisnor.moviereminder.network.NetworkComponent
 import dagger.BindsInstance
 import dagger.Component
 
-
+@CacheScope
 @Component(
     dependencies = [
         NetworkComponent::class

@@ -1,16 +1,14 @@
 package com.evanisnor.moviereminder
 
-import android.app.Activity
-import android.app.Application
 import android.os.StrictMode
+import android.util.Log
 import com.evanisnor.moviereminder.cache.CacheComponent
-import com.evanisnor.moviereminder.trendingmovies.TrendingMoviesActivity
-import javax.inject.Singleton
+import com.evanisnor.moviereminder.libraries.maincomponent.ApplicationScope
+import com.evanisnor.moviereminder.libraries.maincomponent.DaggerMainComponent
+import com.evanisnor.moviereminder.libraries.maincomponent.MainApplication
 
-@Singleton
-class MovieReminderApp : Application() {
-
-    lateinit var mainComponent: MainComponent
+@ApplicationScope
+class MovieReminderApp : MainApplication() {
 
     override fun onCreate() {
         super.onCreate()
@@ -19,18 +17,10 @@ class MovieReminderApp : Application() {
         }
 
         val cacheComponent = CacheComponent.create(this)
+        Log.i("AppScope", "Cache instance ${cacheComponent.getCache()}")
 
         mainComponent = DaggerMainComponent.builder()
             .cacheComponent(cacheComponent)
-            .context(this)
             .build()
-
-        registerActivityLifecycleCallbacks(object : ActivityCallbacks() {
-            override fun onActivityCreated(activity: Activity) {
-                when (activity) {
-                    is TrendingMoviesActivity -> mainComponent.inject(activity)
-                }
-            }
-        })
     }
 }

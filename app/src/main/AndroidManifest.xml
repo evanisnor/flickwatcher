@@ -9,8 +9,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Moviereminder">
+        android:supportsRtl="true">
         <activity
             android:name=".trendingmovies.TrendingMoviesActivity"
             android:exported="true">

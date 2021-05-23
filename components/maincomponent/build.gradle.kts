@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
 }
@@ -9,13 +9,11 @@ android {
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
-        applicationId = "com.evanisnor.moviereminder"
         minSdk = 28
         targetSdk = 30
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -38,12 +36,7 @@ android {
 
 dependencies {
     // Global Components
-    implementation(projects.components.maincomponent)
     implementation(projects.components.cache)
-
-    // Features
-    implementation(projects.features.reminder)
-    implementation(projects.features.trendingmovies)
 
     // Dagger
     implementation(Dependencies.Google.Dagger.dagger)

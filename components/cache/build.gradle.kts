@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.components.network)
+    api(projects.components.network)
 
     implementation(Dependencies.Google.Dagger.dagger)
     kapt(Dependencies.Google.Dagger.daggerCompiler)

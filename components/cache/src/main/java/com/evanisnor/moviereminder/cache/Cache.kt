@@ -4,7 +4,6 @@ import com.evanisnor.moviereminder.cache.database.MovieDao
 import com.evanisnor.moviereminder.cache.model.Movie
 import com.evanisnor.moviereminder.network.TheMovieDbController
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -12,6 +11,7 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import com.evanisnor.moviereminder.network.model.Movie as NetworkMovie
 
+@CacheScope
 class Cache @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
     private val theMovieDbController: TheMovieDbController,

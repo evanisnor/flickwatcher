@@ -44,6 +44,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.components.maincomponent)
     implementation(projects.components.cache)
 
     implementation(Dependencies.Google.Dagger.dagger)

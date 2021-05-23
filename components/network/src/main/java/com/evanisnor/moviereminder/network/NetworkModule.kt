@@ -14,6 +14,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 object NetworkModule {
 
     @Provides
+    @NetworkScope
     fun dispatcher() = Dispatchers.IO
 
     @Provides
@@ -31,6 +32,7 @@ object NetworkModule {
     fun moshiConverterFactory() = MoshiConverterFactory.create()
 
     @Provides
+    @NetworkScope
     fun theMovieDbService(
         okHttpClient: OkHttpClient,
         moshiConverterFactory: MoshiConverterFactory

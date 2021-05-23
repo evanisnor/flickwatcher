@@ -12,9 +12,11 @@ import kotlinx.coroutines.Dispatchers
 object CacheModule {
 
     @Provides
+    @CacheScope
     fun dispatcher() = Dispatchers.IO
 
     @Provides
+    @CacheScope
     fun movieDatabase(context: Context) = Room.databaseBuilder(
         context,
         MovieDatabase::class.java,
@@ -22,6 +24,7 @@ object CacheModule {
     ).build()
 
     @Provides
+    @CacheScope
     fun movieDao(movieDatabase: MovieDatabase): MovieDao {
         return movieDatabase.movieDao()
     }

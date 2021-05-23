@@ -1,6 +1,7 @@
 package com.evanisnor.moviereminder.trendingmovies
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -20,7 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.evanisnor.moviereminder.cache.Cache
+import com.evanisnor.moviereminder.cache.CacheComponent
 import com.evanisnor.moviereminder.cache.model.Movie
+import com.evanisnor.moviereminder.libraries.maincomponent.MainApplication
 import com.evanisnor.moviereminder.trendingmovies.ui.theme.MoviereminderTheme
 import javax.inject.Inject
 
@@ -101,6 +104,14 @@ class TrendingMoviesActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val application = application as MainApplication
+        DaggerTrendingMoviesComponent.builder()
+            .mainComponent(application.mainComponent)
+            .cacheComponent(application.mainComponent.cacheComponent())
+            .build()
+            .inject(this)
+
         setContent {
             LoadingSpinner()
         }
