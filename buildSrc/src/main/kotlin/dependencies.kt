@@ -25,6 +25,8 @@ object Dependencies {
             "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
         const val lifecycleLiveDataKtx =
             "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+        const val lifecycleViewModelKtx =
+            "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
 
         private const val roomVersion = "2.3.0"
         const val room = "androidx.room:room-runtime:$roomVersion"

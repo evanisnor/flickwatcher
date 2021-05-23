@@ -46,6 +46,7 @@ android {
 dependencies {
     implementation(projects.components.maincomponent)
     implementation(projects.components.cache)
+    implementation(projects.libraries.viewmodelfactory)
 
     implementation(Dependencies.Google.Dagger.dagger)
     kapt(Dependencies.Google.Dagger.daggerCompiler)
@@ -56,8 +57,8 @@ dependencies {
     implementation(Dependencies.AndroidX.coreKtx)
     implementation(Dependencies.AndroidX.appcompat)
     implementation(Dependencies.AndroidX.lifecycleRuntimeKtx)
-    implementation(Dependencies.AndroidX.composeLiveData)
     implementation(Dependencies.AndroidX.lifecycleLiveDataKtx)
+    implementation(Dependencies.AndroidX.composeLiveData)
     implementation(Dependencies.AndroidX.composeUi)
     implementation(Dependencies.AndroidX.composeMaterial)
     implementation(Dependencies.AndroidX.composeUiTooling)

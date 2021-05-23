@@ -18,8 +18,8 @@ class MovieReminderApp : MainApplication() {
         val cacheComponent = CacheComponent.create(this)
 
         // MainComponent is exposed to other gradle dependencies via MainApplication in
-        // the 'maincomponent' module. This ensures that feature components can depend on
-        // MainComponent.
+        // the shared 'maincomponent' module. This ensures that feature components can depend on
+        // MainComponent and gain access to scoped global components such as Cache.
         mainComponent = DaggerMainComponent.builder()
             .cacheComponent(cacheComponent)
             .build()

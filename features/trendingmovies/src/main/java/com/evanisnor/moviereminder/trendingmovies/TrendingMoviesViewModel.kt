@@ -7,12 +7,12 @@ import com.evanisnor.moviereminder.cache.Cache
 import com.evanisnor.moviereminder.cache.model.Movie
 
 @TrendingMoviesScope
-class TrendingMoviesViewModel : ViewModel() {
-
-    lateinit var cache: Cache
+class TrendingMoviesViewModel constructor(
+    private val cache: Cache
+) : ViewModel() {
 
     val trendingMovies: LiveData<List<Movie>>
         get() = cache.receiveTrendingMovies().asLiveData()
 
-    fun fetch() = cache.fetchTrendingMovies()
+    fun update() = cache.fetchTrendingMovies()
 }

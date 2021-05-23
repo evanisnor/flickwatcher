@@ -3,11 +3,9 @@ package com.evanisnor.moviereminder.trendingmovies
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -19,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.evanisnor.moviereminder.cache.Cache
 import com.evanisnor.moviereminder.cache.model.Movie
 import com.evanisnor.moviereminder.maincomponent.MainApplication
 import com.evanisnor.moviereminder.trendingmovies.ui.theme.MoviereminderTheme
@@ -27,17 +24,6 @@ import javax.inject.Inject
 
 @TrendingMoviesScope
 class TrendingMoviesActivity : ComponentActivity() {
-
-    @Composable
-    fun LoadingSpinner() {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator()
-        }
-    }
 
     @Composable
     fun TrendingMoviesScreen(trendingMoviesViewModel: TrendingMoviesViewModel) {
@@ -96,9 +82,7 @@ class TrendingMoviesActivity : ComponentActivity() {
     // region Lifecycle
 
     @Inject
-    lateinit var cache: Cache
-
-    private val viewModel: TrendingMoviesViewModel by viewModels()
+    lateinit var viewModel: TrendingMoviesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,18 +91,12 @@ class TrendingMoviesActivity : ComponentActivity() {
         DaggerTrendingMoviesComponent.builder()
             .mainComponent(application.mainComponent)
             .cacheComponent(application.mainComponent.cacheComponent())
+            .trendingMoviesActivity(this)
             .build()
             .inject(this)
 
-        setContent {
-            LoadingSpinner()
-        }
-    }
+        viewModel.update()
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        viewModel.cache = cache
-        viewModel.fetch()
         setContent {
             TrendingMoviesScreen(trendingMoviesViewModel = viewModel)
         }
