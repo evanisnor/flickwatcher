@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.evanisnor.moviereminder.trendingmovies">
+
+    <application>
+        <activity
+            android:name=".TrendingMoviesActivity"
+            android:exported="true"
+            android:label="@string/title_activity_trending_movies"
+            android:theme="@style/Theme.Moviereminder.NoActionBar" />
+    </application>
+
+</manifest>

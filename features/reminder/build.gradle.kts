@@ -31,6 +31,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+
+        freeCompilerArgs = listOf(
+            "-Xallow-jvm-ir-dependencies",
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
+        )
     }
 }
 
@@ -42,8 +48,6 @@ dependencies {
 
     implementation(Dependencies.AndroidX.coreKtx)
     implementation(Dependencies.AndroidX.appcompat)
-    implementation(Dependencies.AndroidX.constraintLayout)
-    implementation(Dependencies.Google.material)
 
     testImplementation(TestDependencies.junit)
     androidTestImplementation(TestDependencies.AndroidX.junitExt)

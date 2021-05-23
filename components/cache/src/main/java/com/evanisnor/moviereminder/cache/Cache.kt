@@ -6,6 +6,7 @@ import com.evanisnor.moviereminder.network.TheMovieDbController
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -17,7 +18,11 @@ class Cache @Inject constructor(
     private val dao: MovieDao
 ) {
 
-    fun receiveTrendingMovies(): Flow<List<Movie>> = dao.getTrendingMovies()
+    fun receiveTrendingMovies() = flow {
+        dao.getTrendingMovies().collect { movies ->
+            emit(movies.sortedBy { it.trendingRank })
+        }
+    }
 
     fun fetchTrendingMovies() = runBlocking {
         launch(dispatcher) {
@@ -41,7 +46,7 @@ class Cache @Inject constructor(
         networkMovie.video,
         networkMovie.popularity,
         trending = true,
-        trendingRank = index
+        trendingRank = index + 1 // Offset by 1 so rank starts at 1 instead of 0
     )
 
 }

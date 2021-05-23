@@ -1,3 +1,7 @@
+object GlobalVersion {
+    const val compose = "1.0.0-beta07"
+}
+
 object Build {
 
     object Android {
@@ -5,28 +9,38 @@ object Build {
     }
 
     object Kotlin {
-        const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.0"
+        const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32"
     }
 
 }
 
 object Dependencies {
 
-
     object AndroidX {
         const val coreKtx = "androidx.core:core-ktx:1.5.0"
         const val appcompat = "androidx.appcompat:appcompat:1.3.0"
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.4"
 
-        const val roomVersion = "2.3.0"
+        private const val lifecycleVersion = "2.3.1"
+        const val lifecycleRuntimeKtx =
+            "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+        const val lifecycleLiveDataKtx =
+            "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+
+        private const val roomVersion = "2.3.0"
         const val room = "androidx.room:room-runtime:$roomVersion"
         const val roomCompiler = "androidx.room:room-compiler:$roomVersion"
         const val roomKtx = "androidx.room:room-ktx:$roomVersion"
+
+        const val composeUi = "androidx.compose.ui:ui:${GlobalVersion.compose}"
+        const val composeMaterial = "androidx.compose.material:material:${GlobalVersion.compose}"
+        const val composeUiTooling = "androidx.compose.ui:ui-tooling:${GlobalVersion.compose}"
+        const val composeLiveData =
+            "androidx.compose.runtime:runtime-livedata:${GlobalVersion.compose}"
+        const val activityCompose = "androidx.activity:activity-compose:1.3.0-alpha08"
     }
 
     object Google {
         const val material = "com.google.android.material:material:1.3.0"
-
 
         object Dagger {
             private const val daggerVersion = "2.35.1"
@@ -58,6 +72,7 @@ object TestDependencies {
     object AndroidX {
         const val junitExt = "androidx.test.ext:junit:1.1.2"
         const val espressoCore = "androidx.test.espresso:espresso-core:3.3.0"
+        const val composeUiTest = "androidx.compose.ui:ui-test-junit4:${GlobalVersion.compose}"
     }
 
 }

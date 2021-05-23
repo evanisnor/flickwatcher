@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
 }
@@ -9,13 +9,14 @@ android {
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
-        applicationId = "com.evanisnor.moviereminder"
         minSdk = 28
         targetSdk = 30
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildTypes {
@@ -34,13 +35,16 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = GlobalVersion.compose
+    }
 }
 
 dependencies {
     implementation(projects.components.cache)
-
-    implementation(projects.features.reminder)
-    implementation(projects.features.trendingmovies)
 
     implementation(Dependencies.Google.Dagger.dagger)
     kapt(Dependencies.Google.Dagger.daggerCompiler)
@@ -50,9 +54,17 @@ dependencies {
 
     implementation(Dependencies.AndroidX.coreKtx)
     implementation(Dependencies.AndroidX.appcompat)
-    implementation(Dependencies.Google.material)
+    implementation(Dependencies.AndroidX.lifecycleRuntimeKtx)
+    implementation(Dependencies.AndroidX.composeLiveData)
+    implementation(Dependencies.AndroidX.lifecycleLiveDataKtx)
+    implementation(Dependencies.AndroidX.composeUi)
+    implementation(Dependencies.AndroidX.composeMaterial)
+    implementation(Dependencies.AndroidX.composeUiTooling)
+    implementation(Dependencies.AndroidX.activityCompose)
 
     testImplementation(TestDependencies.junit)
     androidTestImplementation(TestDependencies.AndroidX.junitExt)
     androidTestImplementation(TestDependencies.AndroidX.espressoCore)
+    androidTestImplementation(TestDependencies.AndroidX.composeUiTest)
+
 }
