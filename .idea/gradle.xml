@@ -8,6 +8,7 @@
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="/usr/local/Cellar/gradle/7.0.2_1/libexec" />
+        <option name="gradleJvm" value="Android Studio default JDK" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -18,7 +19,6 @@
             <option value="$PROJECT_DIR$/components/maincomponent" />
             <option value="$PROJECT_DIR$/components/network" />
             <option value="$PROJECT_DIR$/features" />
-            <option value="$PROJECT_DIR$/features/reminder" />
             <option value="$PROJECT_DIR$/features/trendingmovies" />
             <option value="$PROJECT_DIR$/libraries" />
             <option value="$PROJECT_DIR$/libraries/viewmodelfactory" />
