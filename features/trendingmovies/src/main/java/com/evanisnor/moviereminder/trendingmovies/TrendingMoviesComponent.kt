@@ -2,6 +2,7 @@ package com.evanisnor.moviereminder.trendingmovies
 
 import dagger.Subcomponent
 
+@TrendingMoviesScope
 @Subcomponent
 interface TrendingMoviesComponent {
 
@@ -9,7 +10,5 @@ interface TrendingMoviesComponent {
     interface Builder {
         fun build(): TrendingMoviesComponent
     }
-
-    fun inject(trendingMoviesViewModel: TrendingMoviesViewModel)
 
 }

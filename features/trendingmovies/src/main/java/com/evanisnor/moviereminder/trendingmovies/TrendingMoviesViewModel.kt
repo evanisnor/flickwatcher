@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import com.evanisnor.moviereminder.cache.Cache
 import com.evanisnor.moviereminder.cache.model.Movie
 
+@TrendingMoviesScope
 class TrendingMoviesViewModel : ViewModel() {
 
     lateinit var cache: Cache

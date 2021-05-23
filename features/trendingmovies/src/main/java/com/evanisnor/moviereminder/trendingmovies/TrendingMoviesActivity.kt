@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,8 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.evanisnor.moviereminder.cache.Cache
 import com.evanisnor.moviereminder.cache.model.Movie
+import com.evanisnor.moviereminder.trendingmovies.ui.theme.MoviereminderTheme
 import javax.inject.Inject
 
+@TrendingMoviesScope
 class TrendingMoviesActivity : ComponentActivity() {
 
     @Composable
@@ -38,7 +41,11 @@ class TrendingMoviesActivity : ComponentActivity() {
     @Composable
     fun TrendingMoviesScreen(trendingMoviesViewModel: TrendingMoviesViewModel) {
         val movies by trendingMoviesViewModel.trendingMovies.observeAsState(emptyList())
-        TrendingMovies(movies = movies)
+        MoviereminderTheme {
+            Surface {
+                TrendingMovies(movies = movies)
+            }
+        }
     }
 
     @Composable
