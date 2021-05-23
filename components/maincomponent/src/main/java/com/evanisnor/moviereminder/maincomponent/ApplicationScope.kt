@@ -1,4 +1,4 @@
-package com.evanisnor.moviereminder.libraries.maincomponent
+package com.evanisnor.moviereminder.maincomponent
 
 import javax.inject.Scope
 

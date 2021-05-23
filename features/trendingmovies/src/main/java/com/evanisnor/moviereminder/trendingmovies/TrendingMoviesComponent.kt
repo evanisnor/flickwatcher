@@ -1,7 +1,7 @@
 package com.evanisnor.moviereminder.trendingmovies
 
 import com.evanisnor.moviereminder.cache.CacheComponent
-import com.evanisnor.moviereminder.libraries.maincomponent.MainComponent
+import com.evanisnor.moviereminder.maincomponent.MainComponent
 import dagger.Component
 
 @TrendingMoviesScope

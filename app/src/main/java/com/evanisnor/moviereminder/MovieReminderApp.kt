@@ -1,11 +1,10 @@
 package com.evanisnor.moviereminder
 
 import android.os.StrictMode
-import android.util.Log
 import com.evanisnor.moviereminder.cache.CacheComponent
-import com.evanisnor.moviereminder.libraries.maincomponent.ApplicationScope
-import com.evanisnor.moviereminder.libraries.maincomponent.DaggerMainComponent
-import com.evanisnor.moviereminder.libraries.maincomponent.MainApplication
+import com.evanisnor.moviereminder.maincomponent.ApplicationScope
+import com.evanisnor.moviereminder.maincomponent.DaggerMainComponent
+import com.evanisnor.moviereminder.maincomponent.MainApplication
 
 @ApplicationScope
 class MovieReminderApp : MainApplication() {
@@ -17,8 +16,10 @@ class MovieReminderApp : MainApplication() {
         }
 
         val cacheComponent = CacheComponent.create(this)
-        Log.i("AppScope", "Cache instance ${cacheComponent.getCache()}")
 
+        // MainComponent is exposed to other gradle dependencies via MainApplication in
+        // the 'maincomponent' module. This ensures that feature components can depend on
+        // MainComponent.
         mainComponent = DaggerMainComponent.builder()
             .cacheComponent(cacheComponent)
             .build()

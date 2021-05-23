@@ -1,4 +1,4 @@
-package com.evanisnor.moviereminder.libraries.maincomponent
+package com.evanisnor.moviereminder.maincomponent
 
 import com.evanisnor.moviereminder.cache.CacheComponent
 import dagger.Component
