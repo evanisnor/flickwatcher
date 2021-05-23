@@ -2,7 +2,7 @@ package com.evanisnor.libraries.viewmodelfactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.evanisnor.moviereminder.cache.CacheRepository
+import com.evanisnor.flickwatcher.cache.CacheRepository
 import javax.inject.Inject
 
 class ViewModelFactory @Inject constructor(

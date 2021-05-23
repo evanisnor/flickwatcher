@@ -9,7 +9,7 @@ android {
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
-        applicationId = "com.evanisnor.moviereminder"
+        applicationId = "com.evanisnor.flickwatcher"
         minSdk = 28
         targetSdk = 30
         versionCode = 1
@@ -42,7 +42,6 @@ dependencies {
     implementation(projects.components.cache)
 
     // Features
-    implementation(projects.features.reminder)
     implementation(projects.features.trendingmovies)
 
     // Dagger

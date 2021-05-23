@@ -1,0 +1,18 @@
+package com.evanisnor.flickwatcher.cache.database
+
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import com.evanisnor.flickwatcher.cache.model.Movie
+
+@Database(
+    version = 1,
+    exportSchema = false,
+    entities = [
+        Movie::class
+    ]
+)
+abstract class MovieDatabase : RoomDatabase() {
+
+    abstract fun movieDao(): MovieDao
+
+}
