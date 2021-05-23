@@ -1,6 +1,6 @@
 package com.evanisnor.libraries.viewmodelfactory
 
-import com.evanisnor.moviereminder.cache.Cache
+import com.evanisnor.moviereminder.cache.CacheRepository
 import dagger.Module
 import dagger.Provides
 
@@ -8,5 +8,5 @@ import dagger.Provides
 object ViewModelFactoryModule {
 
     @Provides
-    fun vmFactory(cache: Cache) = ViewModelFactory(cache)
+    fun viewModelFactory(cacheRepository: CacheRepository) = ViewModelFactory(cacheRepository)
 }
