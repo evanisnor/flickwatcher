@@ -2,7 +2,7 @@ package com.evanisnor.moviereminder.cache
 
 import com.evanisnor.moviereminder.cache.database.MovieDao
 import com.evanisnor.moviereminder.cache.model.Movie
-import com.evanisnor.moviereminder.network.TheMovieDbController
+import com.evanisnor.moviereminder.network.TheMovieDbRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
@@ -14,7 +14,7 @@ import com.evanisnor.moviereminder.network.model.Movie as NetworkMovie
 @CacheScope
 class CacheRepository @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
-    private val theMovieDbController: TheMovieDbController,
+    private val theMovieDbRepository: TheMovieDbRepository,
     private val dao: MovieDao
 ) {
 
@@ -27,7 +27,7 @@ class CacheRepository @Inject constructor(
     fun fetchTrendingMovies() = runBlocking {
         launch(dispatcher) {
             dao.deleteTrendingMovies()
-            theMovieDbController.getTrendingMovies().collect { page ->
+            theMovieDbRepository.getTrendingMovies().collect { page ->
                 page?.results?.mapIndexed { i, movie ->
                     convertTrending(movie, i)
                 }?.let { trendingMovies ->

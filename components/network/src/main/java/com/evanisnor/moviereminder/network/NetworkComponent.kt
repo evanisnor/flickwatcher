@@ -10,6 +10,6 @@ import dagger.Component
 )
 interface NetworkComponent {
 
-    fun getTheMovieDbController(): TheMovieDbController
+    fun getTheMovieDbRepository(): TheMovieDbRepository
 
 }
