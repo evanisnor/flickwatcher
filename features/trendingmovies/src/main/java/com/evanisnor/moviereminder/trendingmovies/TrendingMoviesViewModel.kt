@@ -3,16 +3,16 @@ package com.evanisnor.moviereminder.trendingmovies
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.evanisnor.moviereminder.cache.Cache
+import com.evanisnor.moviereminder.cache.CacheRepository
 import com.evanisnor.moviereminder.cache.model.Movie
 
 @TrendingMoviesScope
 class TrendingMoviesViewModel constructor(
-    private val cache: Cache
+    private val cacheRepository: CacheRepository
 ) : ViewModel() {
 
     val trendingMovies: LiveData<List<Movie>>
-        get() = cache.receiveTrendingMovies().asLiveData()
+        get() = cacheRepository.receiveTrendingMovies().asLiveData()
 
-    fun update() = cache.fetchTrendingMovies()
+    fun update() = cacheRepository.fetchTrendingMovies()
 }

@@ -12,7 +12,7 @@ import javax.inject.Inject
 import com.evanisnor.moviereminder.network.model.Movie as NetworkMovie
 
 @CacheScope
-class Cache @Inject constructor(
+class CacheRepository @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
     private val theMovieDbController: TheMovieDbController,
     private val dao: MovieDao

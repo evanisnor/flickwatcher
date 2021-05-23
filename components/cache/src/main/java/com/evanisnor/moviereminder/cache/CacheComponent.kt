@@ -41,6 +41,6 @@ interface CacheComponent {
     }
 
 
-    fun getCache(): Cache
+    fun getCache(): CacheRepository
 
 }
