@@ -1,3 +1,4 @@
+
 object GlobalVersion {
     const val compose = "1.0.0-beta07"
 }
@@ -5,6 +6,9 @@ object GlobalVersion {
 object Build {
 
     object Android {
+        const val minSdk = 28
+        const val compileSdk = 30
+        const val targetSdk = compileSdk
         const val gradlePlugin = "com.android.tools.build:gradle:7.0.0-beta02"
     }
 

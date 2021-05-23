@@ -5,15 +5,14 @@ plugins {
 }
 
 android {
-    compileSdk = 30
-    buildToolsVersion = "30.0.3"
+    compileSdk = Build.Android.compileSdk
 
     defaultConfig {
         applicationId = "com.evanisnor.flickwatcher"
-        minSdk = 28
-        targetSdk = 30
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = Build.Android.minSdk
+        targetSdk = Build.Android.targetSdk
+        versionCode = AppVersion.versionCode
+        versionName = AppVersion.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
