@@ -11,6 +11,7 @@ Cool Dependencies:
 - [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html)
 - [Retrofit](https://square.github.io/retrofit)
 - [Room](https://developer.android.com/training/data-storage/room)
+- [Jetpack Datastore](https://developer.android.com/topic/libraries/architecture/datastore)
 
 ## Architecture
 

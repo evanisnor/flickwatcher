@@ -43,6 +43,7 @@ dependencies {
     implementation(Dependencies.Jetbrains.coroutinesCore)
     implementation(Dependencies.Jetbrains.coroutinesAndroid)
 
+    implementation(Dependencies.AndroidX.datastorePreferences)
     implementation(Dependencies.AndroidX.room)
     implementation(Dependencies.AndroidX.roomKtx)
     kapt(Dependencies.AndroidX.roomCompiler)
