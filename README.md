@@ -2,6 +2,8 @@
 
 Flickwatcher for Android lets you see today's latest trending movies!
 
+![](docs/screenshot.png)
+
 Cool Dependencies:
 
 - [Jetpack Compose](https://developer.android.com/jetpack/compose)

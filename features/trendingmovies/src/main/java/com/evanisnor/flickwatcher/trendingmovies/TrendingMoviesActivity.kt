@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.evanisnor.flickwatcher.cache.model.Movie
 import com.evanisnor.flickwatcher.maincomponent.MainApplication
+import com.evanisnor.flickwatcher.trendingmovies.ui.BackdropOverlay
 import com.evanisnor.flickwatcher.trendingmovies.ui.theme.MoviereminderTheme
 import com.google.accompanist.coil.rememberCoilPainter
 import javax.inject.Inject
@@ -50,40 +51,53 @@ class TrendingMoviesActivity : ComponentActivity() {
 
     @Composable
     fun TrendingMovie(movie: Movie) {
-        val typography = MaterialTheme.typography
-
         Box(
             modifier = Modifier.height(IntrinsicSize.Min)
         ) {
-            movie.posterUrl?.let {
-                Image(
-                    painter = rememberCoilPainter(
-                        "${viewModel.imageBaseUrl}/w780/${movie.backdropUrl}"
-                    ),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxWidth(),
-                    contentScale = ContentScale.FillWidth,
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
-            ) {
-                Text(
-                    text = "${movie.trendingRank}",
-                    color = Color.White,
-                    style = typography.h1
-                )
-                Text(
-                    text = movie.title,
-                    color = Color.White,
-                    style = typography.h6,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(6.dp),
-                    textAlign = TextAlign.Left
-                )
-            }
+
+            MovieBackdrop(movie = movie)
+            BackdropOverlay()
+            MovieLabel(movie = movie)
+
+        }
+    }
+
+    @Composable
+    fun MovieLabel(movie: Movie) {
+        val typography = MaterialTheme.typography
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
+        ) {
+            Text(
+                text = "${movie.trendingRank}",
+                color = Color.White,
+                style = typography.h1
+            )
+            Text(
+                text = movie.title,
+                color = Color.White,
+                style = typography.h6,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(6.dp),
+                textAlign = TextAlign.Left
+            )
+        }
+    }
+
+    @Composable
+    fun MovieBackdrop(movie: Movie) {
+        movie.posterUrl?.let {
+            Image(
+                painter = rememberCoilPainter(
+                    "${viewModel.imageBaseUrl}/w780/${movie.backdropUrl}"
+                ),
+                contentDescription = null,
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.FillWidth,
+            )
         }
     }
 
