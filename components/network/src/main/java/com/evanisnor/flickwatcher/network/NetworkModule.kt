@@ -22,14 +22,14 @@ object NetworkModule {
         trafficStatsInterceptor: TrafficStatsInterceptor,
         networkLoggerInterceptor: NetworkLoggerInterceptor,
         authorizationInterceptor: AuthorizationInterceptor
-    ) = OkHttpClient.Builder()
+    ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(trafficStatsInterceptor)
         .addNetworkInterceptor(networkLoggerInterceptor)
         .addNetworkInterceptor(authorizationInterceptor)
         .build()
 
     @Provides
-    fun moshiConverterFactory() = MoshiConverterFactory.create()
+    fun moshiConverterFactory(): MoshiConverterFactory = MoshiConverterFactory.create()
 
     @Provides
     @NetworkScope

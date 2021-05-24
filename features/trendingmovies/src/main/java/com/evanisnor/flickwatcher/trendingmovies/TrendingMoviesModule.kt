@@ -1,12 +1,12 @@
 package com.evanisnor.flickwatcher.trendingmovies
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
-import com.evanisnor.flickwatcher.cache.CacheRepository
+import coil.ImageLoader
 import com.evanisnor.libraries.viewmodelfactory.ViewModelFactory
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.runBlocking
-import javax.inject.Named
+import okhttp3.OkHttpClient
 
 
 @Module
@@ -21,4 +21,9 @@ object TrendingMoviesModule {
         ViewModelProvider(trendingMoviesActivity, viewModelFactory).get(
             TrendingMoviesViewModel::class.java
         )
+
+    @Provides
+    fun imageLoader(context: Context, okHttpClient: OkHttpClient) = ImageLoader.Builder(context)
+        .okHttpClient(okHttpClient)
+        .build()
 }

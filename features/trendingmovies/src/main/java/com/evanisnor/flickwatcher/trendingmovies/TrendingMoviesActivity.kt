@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import com.evanisnor.flickwatcher.cache.model.Movie
 import com.evanisnor.flickwatcher.maincomponent.FlickwatcherActivity
 import com.evanisnor.flickwatcher.maincomponent.MainApplication
@@ -92,7 +93,8 @@ class TrendingMoviesActivity : FlickwatcherActivity() {
         movie.posterUrl?.let {
             Image(
                 painter = rememberCoilPainter(
-                    "${viewModel.imageBaseUrl}/w780/${movie.backdropUrl}"
+                    "${viewModel.imageBaseUrl}/w780/${movie.backdropUrl}",
+                    imageLoader = imageLoader
                 ),
                 contentDescription = null,
                 modifier = Modifier.fillMaxWidth(),
@@ -121,13 +123,18 @@ class TrendingMoviesActivity : FlickwatcherActivity() {
     @Inject
     lateinit var viewModel: TrendingMoviesViewModel
 
+    @Inject
+    lateinit var imageLoader: ImageLoader
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val application = application as MainApplication
         DaggerTrendingMoviesComponent.builder()
             .mainComponent(application.mainComponent)
+            .networkComponent(application.mainComponent.networkComponent())
             .cacheComponent(application.mainComponent.cacheComponent())
+            .context(this)
             .trendingMoviesActivity(this)
             .build()
             .inject(this)

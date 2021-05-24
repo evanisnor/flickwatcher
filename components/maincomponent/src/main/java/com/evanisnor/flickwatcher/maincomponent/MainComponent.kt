@@ -1,6 +1,7 @@
 package com.evanisnor.flickwatcher.maincomponent
 
 import com.evanisnor.flickwatcher.cache.CacheComponent
+import com.evanisnor.flickwatcher.network.NetworkComponent
 import dagger.Component
 
 @ApplicationScope
@@ -20,5 +21,6 @@ interface MainComponent {
     }
 
     fun cacheComponent(): CacheComponent
+    fun networkComponent(): NetworkComponent
 
 }

@@ -40,6 +40,7 @@ interface CacheComponent {
         fun build(): CacheComponent
     }
 
+    fun networkComponent(): NetworkComponent
 
     fun getCache(): CacheRepository
 
