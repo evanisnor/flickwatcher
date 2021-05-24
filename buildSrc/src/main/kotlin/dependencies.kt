@@ -1,4 +1,3 @@
-
 object GlobalVersion {
     const val compose = "1.0.0-beta07"
 }
@@ -60,6 +59,8 @@ object Dependencies {
         private const val retrofitVersion = "2.9.0"
         const val retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
         const val converterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+
+        const val leakcanary = "com.squareup.leakcanary:leakcanary-android:2.7"
     }
 
     object Jetbrains {

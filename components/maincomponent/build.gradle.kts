@@ -35,6 +35,9 @@ dependencies {
     // Global Components
     implementation(projects.components.cache)
 
+    // AndroidX
+    implementation(Dependencies.AndroidX.activityCompose)
+
     // Dagger
     implementation(Dependencies.Google.Dagger.dagger)
     kapt(Dependencies.Google.Dagger.daggerCompiler)

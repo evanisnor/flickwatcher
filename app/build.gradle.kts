@@ -46,4 +46,7 @@ dependencies {
     // Dagger
     implementation(Dependencies.Google.Dagger.dagger)
     kapt(Dependencies.Google.Dagger.daggerCompiler)
+
+    // Debug
+    debugImplementation(Dependencies.Square.leakcanary)
 }

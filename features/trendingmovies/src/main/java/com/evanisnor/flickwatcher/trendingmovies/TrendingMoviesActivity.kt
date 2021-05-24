@@ -1,7 +1,6 @@
 package com.evanisnor.flickwatcher.trendingmovies
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -21,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.evanisnor.flickwatcher.cache.model.Movie
+import com.evanisnor.flickwatcher.maincomponent.FlickwatcherActivity
 import com.evanisnor.flickwatcher.maincomponent.MainApplication
 import com.evanisnor.flickwatcher.trendingmovies.ui.BackdropOverlay
 import com.evanisnor.flickwatcher.trendingmovies.ui.theme.MoviereminderTheme
@@ -28,7 +28,7 @@ import com.google.accompanist.coil.rememberCoilPainter
 import javax.inject.Inject
 
 @TrendingMoviesScope
-class TrendingMoviesActivity : ComponentActivity() {
+class TrendingMoviesActivity : FlickwatcherActivity() {
 
     @Composable
     fun TrendingMoviesScreen(trendingMoviesViewModel: TrendingMoviesViewModel) {
