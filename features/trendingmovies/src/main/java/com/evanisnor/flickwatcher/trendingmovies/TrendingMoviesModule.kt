@@ -23,6 +23,7 @@ object TrendingMoviesModule {
         )
 
     @Provides
+    @TrendingMoviesScope
     fun imageLoader(context: Context, okHttpClient: OkHttpClient) = ImageLoader.Builder(context)
         .okHttpClient(okHttpClient)
         .build()
