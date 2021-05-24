@@ -47,6 +47,7 @@ object Dependencies {
 
     object Google {
         const val material = "com.google.android.material:material:1.3.0"
+        const val accompanist = "com.google.accompanist:accompanist-coil:0.10.0"
 
         object Dagger {
             private const val daggerVersion = "2.35.1"

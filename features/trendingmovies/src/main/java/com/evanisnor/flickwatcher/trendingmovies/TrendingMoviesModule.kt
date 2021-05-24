@@ -1,9 +1,12 @@
 package com.evanisnor.flickwatcher.trendingmovies
 
 import androidx.lifecycle.ViewModelProvider
+import com.evanisnor.flickwatcher.cache.CacheRepository
 import com.evanisnor.libraries.viewmodelfactory.ViewModelFactory
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.runBlocking
+import javax.inject.Named
 
 
 @Module

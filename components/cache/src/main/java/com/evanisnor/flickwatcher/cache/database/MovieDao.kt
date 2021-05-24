@@ -1,9 +1,6 @@
 package com.evanisnor.flickwatcher.cache.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.evanisnor.flickwatcher.cache.model.Movie
 import kotlinx.coroutines.flow.Flow
 
@@ -22,5 +19,7 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertMovies(vararg movies: Movie)
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updateMovie(movie: Movie)
 
 }

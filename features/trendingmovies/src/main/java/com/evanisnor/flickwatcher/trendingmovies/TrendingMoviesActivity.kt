@@ -3,6 +3,7 @@ package com.evanisnor.flickwatcher.trendingmovies
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,12 +15,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.evanisnor.flickwatcher.cache.model.Movie
 import com.evanisnor.flickwatcher.maincomponent.MainApplication
 import com.evanisnor.flickwatcher.trendingmovies.ui.theme.MoviereminderTheme
+import com.google.accompanist.coil.rememberCoilPainter
 import javax.inject.Inject
 
 @TrendingMoviesScope
@@ -37,9 +41,7 @@ class TrendingMoviesActivity : ComponentActivity() {
 
     @Composable
     fun TrendingMovies(movies: List<Movie>) {
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 8.dp)
-        ) {
+        LazyColumn {
             items(movies) { movie ->
                 TrendingMovie(movie = movie)
             }
@@ -49,18 +51,39 @@ class TrendingMoviesActivity : ComponentActivity() {
     @Composable
     fun TrendingMovie(movie: Movie) {
         val typography = MaterialTheme.typography
-        Row(
-            verticalAlignment = Alignment.CenterVertically
+
+        Box(
+            modifier = Modifier.height(IntrinsicSize.Min)
         ) {
-            Text(text = "${movie.trendingRank}", style = typography.h1)
-            Text(
-                text = movie.title,
-                style = typography.h6,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(6.dp),
-                textAlign = TextAlign.Left,
-            )
+            movie.posterUrl?.let {
+                Image(
+                    painter = rememberCoilPainter(
+                        "${viewModel.imageBaseUrl}/w780/${movie.backdropUrl}"
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxWidth(),
+                    contentScale = ContentScale.FillWidth,
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
+            ) {
+                Text(
+                    text = "${movie.trendingRank}",
+                    color = Color.White,
+                    style = typography.h1
+                )
+                Text(
+                    text = movie.title,
+                    color = Color.White,
+                    style = typography.h6,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(6.dp),
+                    textAlign = TextAlign.Left
+                )
+            }
         }
     }
 

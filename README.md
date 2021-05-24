@@ -5,6 +5,7 @@ Flickwatcher for Android lets you see today's latest trending movies!
 Cool Dependencies:
 
 - [Jetpack Compose](https://developer.android.com/jetpack/compose)
+- [Accompanist-Coil](https://google.github.io/accompanist/coil)
 - [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html)
 - [Retrofit](https://square.github.io/retrofit)
 - [Room](https://developer.android.com/training/data-storage/room)

@@ -62,6 +62,7 @@ dependencies {
     implementation(Dependencies.AndroidX.composeMaterial)
     implementation(Dependencies.AndroidX.composeUiTooling)
     implementation(Dependencies.AndroidX.activityCompose)
+    implementation(Dependencies.Google.accompanist)
 
     testImplementation(TestDependencies.junit)
     androidTestImplementation(TestDependencies.AndroidX.junitExt)
