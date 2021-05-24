@@ -1,8 +1,6 @@
 package com.evanisnor.flickwatcher.cache
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
@@ -10,18 +8,16 @@ import com.evanisnor.flickwatcher.cache.database.MovieDao
 import com.evanisnor.flickwatcher.cache.database.MovieDatabase
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import javax.inject.Named
 
 @Module
 object CacheModule {
 
     @Provides
     @CacheScope
-    fun dispatcher() = Dispatchers.IO
+    fun cacheCoroutineScope() = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     @Provides
     @CacheScope
@@ -39,11 +35,11 @@ object CacheModule {
 
     @Provides
     @CacheScope
-    fun dataStore(context: Context, dispatcher: CoroutineDispatcher) =
+    fun dataStore(context: Context, cacheCoroutineScope: CoroutineScope) =
         PreferenceDataStoreFactory.create(
             corruptionHandler = null,
             migrations = listOf(),
-            scope = CoroutineScope(dispatcher + SupervisorJob())
+            scope = cacheCoroutineScope
         ) {
             context.preferencesDataStoreFile("Cache")
         }

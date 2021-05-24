@@ -19,13 +19,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
 import com.evanisnor.flickwatcher.cache.model.Movie
 import com.evanisnor.flickwatcher.maincomponent.FlickwatcherActivity
 import com.evanisnor.flickwatcher.maincomponent.MainApplication
 import com.evanisnor.flickwatcher.trendingmovies.ui.BackdropOverlay
-import com.evanisnor.flickwatcher.trendingmovies.ui.theme.MoviereminderTheme
+import com.evanisnor.flickwatcher.trendingmovies.ui.theme.TrendingMoviesTheme
 import com.google.accompanist.coil.rememberCoilPainter
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @TrendingMoviesScope
@@ -34,7 +36,7 @@ class TrendingMoviesActivity : FlickwatcherActivity() {
     @Composable
     fun TrendingMoviesScreen(trendingMoviesViewModel: TrendingMoviesViewModel) {
         val movies by trendingMoviesViewModel.trendingMovies.observeAsState(emptyList())
-        MoviereminderTheme {
+        TrendingMoviesTheme {
             Surface {
                 TrendingMovies(movies = movies)
             }
@@ -129,21 +131,22 @@ class TrendingMoviesActivity : FlickwatcherActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val application = application as MainApplication
-        DaggerTrendingMoviesComponent.builder()
-            .mainComponent(application.mainComponent)
-            .networkComponent(application.mainComponent.networkComponent())
-            .cacheComponent(application.mainComponent.cacheComponent())
-            .context(this)
-            .trendingMoviesActivity(this)
-            .build()
-            .inject(this)
+        lifecycleScope.launchWhenStarted {
+            val application = application as MainApplication
+            DaggerTrendingMoviesComponent.builder()
+                .mainComponent(application.mainComponent)
+                .networkComponent(application.mainComponent.networkComponent())
+                .cacheComponent(application.mainComponent.cacheComponent())
+                .context(this@TrendingMoviesActivity)
+                .trendingMoviesActivity(this@TrendingMoviesActivity)
+                .build()
+                .inject(this@TrendingMoviesActivity)
 
-        viewModel.update()
-
-        setContent {
-            TrendingMoviesScreen(trendingMoviesViewModel = viewModel)
+            setContent {
+                TrendingMoviesScreen(trendingMoviesViewModel = viewModel)
+            }
         }
+
     }
 
     // endregion
