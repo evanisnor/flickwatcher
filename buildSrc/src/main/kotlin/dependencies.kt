@@ -36,6 +36,8 @@ object Dependencies {
         const val roomCompiler = "androidx.room:room-compiler:$roomVersion"
         const val roomKtx = "androidx.room:room-ktx:$roomVersion"
 
+        const val datastorePreferences = "androidx.datastore:datastore-preferences:1.0.0-beta01"
+
         const val composeUi = "androidx.compose.ui:ui:${GlobalVersion.compose}"
         const val composeMaterial = "androidx.compose.material:material:${GlobalVersion.compose}"
         const val composeUiTooling = "androidx.compose.ui:ui-tooling:${GlobalVersion.compose}"

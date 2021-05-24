@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.evanisnor.flickwatcher.cache.CacheRepository
 import com.evanisnor.flickwatcher.cache.model.Movie
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 @TrendingMoviesScope
@@ -16,7 +17,7 @@ class TrendingMoviesViewModel constructor(
         get() = cacheRepository.receiveTrendingMovies().asLiveData()
 
     val imageBaseUrl: String
-        get() = cacheRepository.receiveImageBaseUrl() ?: ""
+        get() = runBlocking { cacheRepository.receiveImageBaseUrl().first() }
 
     fun update() = runBlocking {
         cacheRepository.fetchImageBaseUrl()

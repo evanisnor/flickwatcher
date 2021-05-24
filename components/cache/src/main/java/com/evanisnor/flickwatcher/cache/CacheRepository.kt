@@ -1,7 +1,10 @@
 package com.evanisnor.flickwatcher.cache
 
-import android.content.SharedPreferences
 import android.util.Log
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.evanisnor.flickwatcher.cache.database.MovieDao
 import com.evanisnor.flickwatcher.cache.model.Movie
 import com.evanisnor.flickwatcher.cache.model.toLocalTrending
@@ -11,22 +14,28 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
-import javax.inject.Named
 
 @CacheScope
 class CacheRepository @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
     private val theMovieDbRepository: TheMovieDbRepository,
     private val dao: MovieDao,
-    @Named("ConfigurationSharedPrefs") private val sharedPreferences: SharedPreferences
+    private val dataStore: DataStore<Preferences>
 ) {
+
+    companion object {
+        val ImageBaseUrlKey = stringPreferencesKey("ImageBaseUrl")
+    }
 
     // region Image Base URL
 
-    fun receiveImageBaseUrl() = sharedPreferences.getString("ImageBaseURL", null)
+    fun receiveImageBaseUrl() = dataStore.data.map { preferences ->
+        preferences[ImageBaseUrlKey] ?: ""
+    }
 
     suspend fun fetchImageBaseUrl() = coroutineScope {
         launch(dispatcher) {
@@ -36,9 +45,9 @@ class CacheRepository @Inject constructor(
                 }
                 .collect { imageBaseUrl ->
                     if (!imageBaseUrl.isNullOrBlank()) {
-                        sharedPreferences.edit()
-                            .putString("ImageBaseURL", imageBaseUrl)
-                            .apply()
+                        dataStore.edit { settings ->
+                            settings[ImageBaseUrlKey] = imageBaseUrl
+                        }
                     }
                 }
         }
