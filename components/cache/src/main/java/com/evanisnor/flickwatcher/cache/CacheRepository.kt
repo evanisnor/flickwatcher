@@ -9,17 +9,17 @@ import com.evanisnor.flickwatcher.cache.database.MovieDao
 import com.evanisnor.flickwatcher.cache.model.Movie
 import com.evanisnor.flickwatcher.cache.model.toLocalTrending
 import com.evanisnor.flickwatcher.network.TheMovieDbRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.*
 import java.time.LocalDate
 import javax.inject.Inject
 
 @CacheScope
 class CacheRepository @Inject constructor(
+    private val dispatcher: CoroutineDispatcher,
     private val cacheCoroutineScope: CoroutineScope,
     private val theMovieDbRepository: TheMovieDbRepository,
     private val dao: MovieDao,
@@ -32,41 +32,60 @@ class CacheRepository @Inject constructor(
 
     // region Image Base URL
 
-    fun receiveImageBaseUrl() = dataStore.data.map { preferences ->
-        preferences[ImageBaseUrlKey] ?: ""
-    }
+    @ExperimentalCoroutinesApi
+    suspend fun getImageBaseUrl() = channelFlow<String> {
+        dataStore.data.map { preferences ->
+            val storedImageBaseUrl = preferences[ImageBaseUrlKey]
 
-    fun fetchImageBaseUrl() = cacheCoroutineScope.launch {
+            if (storedImageBaseUrl.isNullOrBlank()) {
+                fetchImageBaseUrl().collect { updatedImageBaseUrl ->
+                    dataStore.edit { settings ->
+                        settings[ImageBaseUrlKey] = updatedImageBaseUrl
+                        send(updatedImageBaseUrl)
+                    }
+                }
+            } else {
+                send(storedImageBaseUrl)
+            }
+        }.stateIn(cacheCoroutineScope)
+
+        awaitClose { }
+    }.flowOn(dispatcher)
+
+
+    private suspend fun fetchImageBaseUrl() = flow {
         theMovieDbRepository.getImageBaseUrl()
             .catch { e ->
                 Log.w(CacheRepository::class.simpleName, "Error fetching ImageBaseUrl: $e")
             }
             .collect { imageBaseUrl ->
                 if (!imageBaseUrl.isNullOrBlank()) {
-                    dataStore.edit { settings ->
-                        settings[ImageBaseUrlKey] = imageBaseUrl
-                    }
+                    emit(imageBaseUrl)
                 }
             }
-    }
+
+    }.flowOn(dispatcher)
 
     // endregion
 
     // region Fetch Trending Movies
 
-    fun receiveTrendingMovies() = flow {
-        // Hard coding for today
-        val today = LocalDate.now()
-
-        dao.getTrendingMovies(today).collect { movies ->
-            emit(movies.sortedBy { it.trendingRank })
+    @ExperimentalCoroutinesApi
+    fun getTrendingMovies(localDate: LocalDate = LocalDate.now()) = channelFlow<List<Movie>> {
+        dao.getTrendingMovies(localDate).collect { cachedMovies ->
+            if (cachedMovies.isEmpty()) {
+                fetchTrendingMovies(localDate).collect { updatedMovies ->
+                    send(updatedMovies)
+                }
+            } else {
+                send(cachedMovies.sortedBy { it.trendingRank })
+            }
         }
-    }
 
-    fun fetchTrendingMovies() = cacheCoroutineScope.launch {
-        // Hard coding for today
-        val today = LocalDate.now()
+        awaitClose { }
+    }.flowOn(dispatcher)
 
+    private suspend fun fetchTrendingMovies(localDate: LocalDate) = flow {
         theMovieDbRepository.getTrendingMovies()
             .catch { e ->
                 Log.w(CacheRepository::class.simpleName, "Error fetching TrendingMovies: $e")
@@ -80,13 +99,13 @@ class CacheRepository @Inject constructor(
                     fetchMovieImages(trendingMovies)
                 }?.let { trendingMovies ->
                     dao.insertMovies(*trendingMovies.toTypedArray())
-                    dao.clearOldTrendingMovies(today)
+                    dao.clearOldTrendingMovies(localDate)
+                    emit(trendingMovies)
                 }
-
             }
-    }
+    }.flowOn(dispatcher)
 
-    private fun fetchMovieImages(movies: List<Movie>) = cacheCoroutineScope.launch {
+    private suspend fun fetchMovieImages(movies: List<Movie>) {
         val moviesMap = movies.associateBy { it.id }
         theMovieDbRepository.getTrendingMovieImageUrls(*moviesMap.keys.toIntArray())
             .catch { e ->

@@ -24,7 +24,7 @@ interface CacheComponent {
         // Necessary because this component has a Builder (not a no-arg component)
         fun create(context: Context) = DaggerCacheComponent.builder()
             .context(context)
-            .networkComponent(DaggerNetworkComponent.create())
+            .networkComponent(DaggerNetworkComponent.builder().context(context).build())
             .build()
 
     }

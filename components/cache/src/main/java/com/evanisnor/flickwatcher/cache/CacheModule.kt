@@ -8,6 +8,7 @@ import com.evanisnor.flickwatcher.cache.database.MovieDao
 import com.evanisnor.flickwatcher.cache.database.MovieDatabase
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -17,7 +18,12 @@ object CacheModule {
 
     @Provides
     @CacheScope
-    fun cacheCoroutineScope() = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    fun dispatcher() = Dispatchers.IO
+
+    @Provides
+    @CacheScope
+    fun cacheCoroutineScope(dispatcher: CoroutineDispatcher) =
+        CoroutineScope(dispatcher + SupervisorJob())
 
     @Provides
     @CacheScope

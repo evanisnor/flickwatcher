@@ -1,5 +1,7 @@
 package com.evanisnor.flickwatcher.network
 
+import android.content.Context
+import android.net.ConnectivityManager
 import com.evanisnor.flickwatcher.network.interceptors.AuthorizationInterceptor
 import com.evanisnor.flickwatcher.network.interceptors.NetworkLoggerInterceptor
 import com.evanisnor.flickwatcher.network.interceptors.TrafficStatsInterceptor
@@ -42,4 +44,9 @@ object NetworkModule {
         .addConverterFactory(moshiConverterFactory)
         .build()
         .create(TheMovieDbService::class.java)
+
+    @Provides
+    @NetworkScope
+    fun connectivityManager(context: Context): ConnectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 }

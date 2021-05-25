@@ -10,8 +10,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,41 +22,71 @@ import coil.ImageLoader
 import com.evanisnor.flickwatcher.cache.model.Movie
 import com.evanisnor.flickwatcher.maincomponent.FlickwatcherActivity
 import com.evanisnor.flickwatcher.maincomponent.MainApplication
+import com.evanisnor.flickwatcher.network.NetworkMonitor
 import com.evanisnor.flickwatcher.trendingmovies.ui.BackdropOverlay
+import com.evanisnor.flickwatcher.trendingmovies.ui.EmptyAndDisconnected
+import com.evanisnor.flickwatcher.trendingmovies.ui.LoadingSpinner
 import com.evanisnor.flickwatcher.trendingmovies.ui.theme.TrendingMoviesTheme
 import com.google.accompanist.coil.rememberCoilPainter
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 @TrendingMoviesScope
 class TrendingMoviesActivity : FlickwatcherActivity() {
 
+    @ExperimentalCoroutinesApi
     @Composable
-    fun TrendingMoviesScreen(trendingMoviesViewModel: TrendingMoviesViewModel) {
-        val movies by trendingMoviesViewModel.trendingMovies.observeAsState(emptyList())
+    fun TrendingMoviesScreen(
+        movies: List<Movie>,
+        imageBaseUrl: String = viewModel.imageBaseUrl.value,
+        networkStatus: NetworkMonitor.Status = viewModel.networkStatus.value
+    ) {
         TrendingMoviesTheme {
             Surface {
-                TrendingMovies(movies = movies)
+                if (movies.isNotEmpty()) {
+                    TrendingMovies(
+                        movies = movies,
+                        imageBaseUrl = imageBaseUrl
+                    )
+                } else if (movies.isEmpty() && (networkStatus == NetworkMonitor.Status.Disconnected || networkStatus == NetworkMonitor.Status.Unknown)) {
+                    EmptyAndDisconnected()
+                } else {
+                    LoadingSpinner()
+                }
             }
         }
     }
 
     @Composable
-    fun TrendingMovies(movies: List<Movie>) {
+    fun TrendingMovies(
+        movies: List<Movie>,
+        imageBaseUrl: String = ""
+    ) {
         LazyColumn {
             items(movies) { movie ->
-                TrendingMovie(movie = movie)
+                TrendingMovie(
+                    movie = movie,
+                    imageBaseUrl = imageBaseUrl
+                )
             }
         }
     }
 
     @Composable
-    fun TrendingMovie(movie: Movie) {
+    fun TrendingMovie(
+        movie: Movie,
+        imageBaseUrl: String
+    ) {
         Box(
             modifier = Modifier.height(IntrinsicSize.Min)
         ) {
 
-            MovieBackdrop(movie = movie)
+            MovieBackdrop(
+                movie = movie,
+                imageBaseUrl = imageBaseUrl
+            )
             BackdropOverlay()
             MovieLabel(movie = movie)
 
@@ -91,11 +119,14 @@ class TrendingMoviesActivity : FlickwatcherActivity() {
     }
 
     @Composable
-    fun MovieBackdrop(movie: Movie) {
+    fun MovieBackdrop(
+        movie: Movie,
+        imageBaseUrl: String
+    ) {
         movie.posterUrl?.let {
             Image(
                 painter = rememberCoilPainter(
-                    "${viewModel.imageBaseUrl}/w780/${movie.backdropUrl}",
+                    "${imageBaseUrl}/w780/${movie.backdropUrl}",
                     imageLoader = imageLoader
                 ),
                 contentDescription = null,
@@ -122,12 +153,14 @@ class TrendingMoviesActivity : FlickwatcherActivity() {
 
     // region Lifecycle
 
+    @ExperimentalCoroutinesApi
     @Inject
     lateinit var viewModel: TrendingMoviesViewModel
 
     @Inject
     lateinit var imageLoader: ImageLoader
 
+    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -142,13 +175,22 @@ class TrendingMoviesActivity : FlickwatcherActivity() {
                 .build()
                 .inject(this@TrendingMoviesActivity)
 
-            setContent {
-                TrendingMoviesScreen(trendingMoviesViewModel = viewModel)
+            viewModel.trendingMovies.combine(viewModel.networkStatus) { movies, status ->
+                Pair<List<Movie>, NetworkMonitor.Status>(movies, status)
+            }.collect { pair ->
+                withContext(Dispatchers.Main) {
+                    setContent {
+                        TrendingMoviesScreen(
+                            movies = pair.first,
+                            networkStatus = pair.second
+                        )
+                    }
+                }
             }
         }
-
     }
 
-    // endregion
-
 }
+
+// endregion
+

@@ -1,30 +1,57 @@
 package com.evanisnor.flickwatcher.trendingmovies
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.evanisnor.flickwatcher.cache.CacheRepository
 import com.evanisnor.flickwatcher.cache.model.Movie
-import kotlinx.coroutines.flow.first
+import com.evanisnor.flickwatcher.network.NetworkMonitor
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
+@ExperimentalCoroutinesApi
 @TrendingMoviesScope
 class TrendingMoviesViewModel constructor(
-    private val cacheRepository: CacheRepository
+    private val cacheRepository: CacheRepository,
+    private val networkMonitor: NetworkMonitor
 ) : ViewModel() {
 
+    private val _networkStatus = MutableStateFlow(NetworkMonitor.Status.Unknown)
+    val networkStatus: StateFlow<NetworkMonitor.Status> = _networkStatus
+
+    private val _trendingMovies = MutableStateFlow(emptyList<Movie>())
+    val trendingMovies: StateFlow<List<Movie>> = _trendingMovies
+
+    private val _imageBaseUrl: MutableStateFlow<String> = MutableStateFlow("")
+    val imageBaseUrl: StateFlow<String> = _imageBaseUrl
+
     init {
-        viewModelScope.launch {
-            cacheRepository.fetchImageBaseUrl()
-            cacheRepository.fetchTrendingMovies()
+        watchNetworkState()
+        fetchImageBaseUrl()
+        fetchTrendingMovies()
+    }
+
+    private fun fetchTrendingMovies() = viewModelScope.launch {
+        cacheRepository.getTrendingMovies().collect { movies ->
+            _trendingMovies.value = movies
         }
     }
 
-    val trendingMovies: LiveData<List<Movie>>
-        get() = cacheRepository.receiveTrendingMovies().asLiveData()
+    private fun fetchImageBaseUrl() = viewModelScope.launch {
+        cacheRepository.getImageBaseUrl().collect { url ->
+            _imageBaseUrl.value = url
+        }
+    }
 
-    val imageBaseUrl: String
-        get() = runBlocking { cacheRepository.receiveImageBaseUrl().first() }
+    private fun watchNetworkState() = viewModelScope.launch {
+        networkMonitor.networkState().collect { status ->
+            if (_networkStatus.value != NetworkMonitor.Status.Connected && status == NetworkMonitor.Status.Connected) {
+                // back online?
+                fetchTrendingMovies()
+            }
+            _networkStatus.value = status
+        }
+    }
 }
