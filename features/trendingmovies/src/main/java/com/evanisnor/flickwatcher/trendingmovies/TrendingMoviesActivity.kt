@@ -165,26 +165,33 @@ class TrendingMoviesActivity : FlickwatcherActivity() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launchWhenStarted {
-            val application = application as MainApplication
-            DaggerTrendingMoviesComponent.builder()
-                .mainComponent(application.mainComponent)
-                .networkComponent(application.mainComponent.networkComponent())
-                .cacheComponent(application.mainComponent.cacheComponent())
-                .context(this@TrendingMoviesActivity)
-                .trendingMoviesActivity(this@TrendingMoviesActivity)
-                .build()
-                .inject(this@TrendingMoviesActivity)
+            launch(Dispatchers.IO) {
+                val application = application as MainApplication
+                DaggerTrendingMoviesComponent.builder()
+                    .mainComponent(application.mainComponent)
+                    .networkComponent(application.mainComponent.networkComponent())
+                    .cacheComponent(application.mainComponent.cacheComponent())
+                    .context(this@TrendingMoviesActivity)
+                    .trendingMoviesActivity(this@TrendingMoviesActivity)
+                    .build()
+                    .inject(this@TrendingMoviesActivity)
 
-            viewModel.trendingMovies.combine(viewModel.networkStatus) { movies, status ->
-                Pair<List<Movie>, NetworkMonitor.Status>(movies, status)
-            }.collect { pair ->
-                withContext(Dispatchers.Main) {
-                    setContent {
-                        TrendingMoviesScreen(
-                            movies = pair.first,
-                            networkStatus = pair.second
-                        )
-                    }
+                load()
+            }
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    private suspend fun load() {
+        viewModel.trendingMovies.combine(viewModel.networkStatus) { movies, status ->
+            Pair<List<Movie>, NetworkMonitor.Status>(movies, status)
+        }.collect { pair ->
+            withContext(Dispatchers.Main) {
+                setContent {
+                    TrendingMoviesScreen(
+                        movies = pair.first,
+                        networkStatus = pair.second
+                    )
                 }
             }
         }

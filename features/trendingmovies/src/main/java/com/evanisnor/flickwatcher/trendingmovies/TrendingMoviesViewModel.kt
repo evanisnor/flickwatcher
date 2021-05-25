@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
-@TrendingMoviesScope
 class TrendingMoviesViewModel constructor(
     private val cacheRepository: CacheRepository,
     private val networkMonitor: NetworkMonitor
