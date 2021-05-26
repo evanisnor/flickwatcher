@@ -24,10 +24,14 @@ class TheMovieDbRepository @Inject constructor(
         emit(response.body())
     }.flowOn(dispatcher)
 
-    suspend fun getTrendingMovieImageUrls(vararg moviesIds: Int): Flow<MovieImages?> = flow {
+    suspend fun getTrendingMovieImageUrls(vararg moviesIds: Int): Flow<List<MovieImages>> = flow {
+        val movieImages: MutableList<MovieImages> = mutableListOf()
         moviesIds.forEach { id ->
-            val response = theMovieDbService.getMovieImages(id)
-            emit(response.body())
+            theMovieDbService.getMovieImages(id).body()?.let {
+                movieImages.add(it)
+            }
+        }.also {
+            emit(movieImages)
         }
     }.flowOn(dispatcher)
 }

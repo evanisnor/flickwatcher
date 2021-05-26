@@ -71,21 +71,25 @@ class CacheRepository @Inject constructor(
     // region Fetch Trending Movies
 
     @ExperimentalCoroutinesApi
-    fun getTrendingMovies(localDate: LocalDate = LocalDate.now()) = channelFlow<List<Movie>> {
-        dao.getTrendingMovies(localDate).collect { cachedMovies ->
-            if (cachedMovies.isEmpty()) {
-                fetchTrendingMovies(localDate).collect { updatedMovies ->
-                    send(updatedMovies)
-                }
-            } else {
-                send(cachedMovies.sortedBy { it.trendingRank })
+    fun getTrendingMovies(localDate: LocalDate = LocalDate.now()) = flow<List<Movie>> {
+        dao.getTrendingMovies().collect { cachedMovies ->
+
+            // Always return any cached movies immediately
+            if (cachedMovies.isNotEmpty()) {
+                emit(cachedMovies)
+            }
+
+            // If there were no cached movies, or if the last known date is old, then attempt
+            // to fetch latest from network.
+            if (cachedMovies.isEmpty() ||
+                cachedMovies.any { it.trendingDate?.isBefore(localDate) == true }) {
+
+                fetchTrendingMovies()
             }
         }
-
-        awaitClose { }
     }.flowOn(dispatcher)
 
-    private suspend fun fetchTrendingMovies(localDate: LocalDate) = flow {
+    private suspend fun fetchTrendingMovies() {
         theMovieDbRepository.getTrendingMovies()
             .catch { e ->
                 Log.w(CacheRepository::class.simpleName, "Error fetching TrendingMovies: $e")
@@ -94,30 +98,32 @@ class CacheRepository @Inject constructor(
                 // Convert the network-fetched Movie objects into local Movie objects and store them
                 page?.results?.mapIndexed { i, movie ->
                     movie.toLocalTrending(i)
+                }?.takeUnless {
+                    it.isEmpty()
                 }?.also { trendingMovies ->
                     // Return to the network to fetch image URLs for each movie
-                    fetchMovieImages(trendingMovies)
+                    fetchMovieImageUrls(trendingMovies)
                 }?.let { trendingMovies ->
+                    dao.clearOldTrendingMovies()
                     dao.insertMovies(*trendingMovies.toTypedArray())
-                    dao.clearOldTrendingMovies(localDate)
-                    emit(trendingMovies)
                 }
             }
-    }.flowOn(dispatcher)
+    }
 
-    private suspend fun fetchMovieImages(movies: List<Movie>) {
+    private suspend fun fetchMovieImageUrls(movies: List<Movie>) {
         val moviesMap = movies.associateBy { it.id }
         theMovieDbRepository.getTrendingMovieImageUrls(*moviesMap.keys.toIntArray())
             .catch { e ->
                 Log.w(CacheRepository::class.simpleName, "Error fetching MovieImages: $e")
             }
-            .collect { movieImages ->
-                movieImages?.apply {
-                    moviesMap[id]?.let { movie ->
-                        movie.posterUrl = posters.firstOrNull()?.file_path
-                        movie.backdropUrl = backdrops.firstOrNull()?.file_path
-                        dao.updateMovie(movie)
+            .collect { movieImagesList ->
+                movieImagesList.forEach { movieImages ->
+                    moviesMap[movieImages.id]?.apply {
+                        posterUrl = movieImages.posters.firstOrNull()?.file_path
+                        backdropUrl = movieImages.backdrops.firstOrNull()?.file_path
                     }
+                }.also {
+                    dao.updateMovies(*moviesMap.values.toTypedArray())
                 }
             }
     }

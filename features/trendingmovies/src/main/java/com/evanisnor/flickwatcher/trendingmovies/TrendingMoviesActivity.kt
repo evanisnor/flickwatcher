@@ -6,9 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -183,14 +181,20 @@ class TrendingMoviesActivity : FlickwatcherActivity() {
 
     @ExperimentalCoroutinesApi
     private suspend fun load() {
+        // Combine the two flows and we reset the content when either changes omg 🤯
         viewModel.trendingMovies.combine(viewModel.networkStatus) { movies, status ->
-            Pair<List<Movie>, NetworkMonitor.Status>(movies, status)
+            // Pair is lame
+            Pair(movies, status)
         }.collect { pair ->
+            val movies = pair.first
+            val networkStatus = pair.second
+
             withContext(Dispatchers.Main) {
+
                 setContent {
                     TrendingMoviesScreen(
-                        movies = pair.first,
-                        networkStatus = pair.second
+                        movies = movies,
+                        networkStatus = networkStatus
                     )
                 }
             }
