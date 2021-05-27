@@ -73,6 +73,10 @@ object Dependencies {
             "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     }
 
+    object Coil {
+        const val coilBase = "io.coil-kt:coil-base:1.1.1"
+    }
+
 }
 
 object TestDependencies {

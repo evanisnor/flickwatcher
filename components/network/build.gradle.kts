@@ -38,6 +38,7 @@ dependencies {
     implementation(Dependencies.Square.retrofit)
     implementation(Dependencies.Square.converterMoshi)
     implementation(Dependencies.Jetbrains.coroutinesCore)
+    implementation(Dependencies.Coil.coilBase)
 
     testImplementation(TestDependencies.junit)
     androidTestImplementation(TestDependencies.AndroidX.junitExt)

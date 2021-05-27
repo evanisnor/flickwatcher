@@ -3,7 +3,6 @@ package com.evanisnor.flickwatcher.trendingmovies
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
-import coil.util.CoilUtils
 import com.evanisnor.libraries.viewmodelfactory.ViewModelFactory
 import dagger.Module
 import dagger.Provides
@@ -28,10 +27,6 @@ object TrendingMoviesModule {
     @Provides
     @TrendingMoviesScope
     fun imageLoader(context: Context, okHttpClient: OkHttpClient) = ImageLoader.Builder(context)
-        .okHttpClient(
-            okHttpClient.newBuilder()
-                .cache(CoilUtils.createDefaultCache(context))
-                .build()
-        )
+        .okHttpClient(okHttpClient)
         .build()
 }
