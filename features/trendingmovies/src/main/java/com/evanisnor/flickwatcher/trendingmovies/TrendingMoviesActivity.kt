@@ -21,10 +21,10 @@ import com.evanisnor.flickwatcher.cache.model.Movie
 import com.evanisnor.flickwatcher.maincomponent.FlickwatcherActivity
 import com.evanisnor.flickwatcher.maincomponent.MainApplication
 import com.evanisnor.flickwatcher.network.NetworkMonitor
-import com.evanisnor.flickwatcher.trendingmovies.ui.BackdropOverlay
-import com.evanisnor.flickwatcher.trendingmovies.ui.EmptyAndDisconnected
-import com.evanisnor.flickwatcher.trendingmovies.ui.LoadingSpinner
-import com.evanisnor.flickwatcher.trendingmovies.ui.theme.TrendingMoviesTheme
+import com.evanisnor.flickwatcher.ux.composable.BackdropOverlay
+import com.evanisnor.flickwatcher.ux.composable.EmptyAndDisconnected
+import com.evanisnor.flickwatcher.ux.composable.LoadingSpinner
+import com.evanisnor.flickwatcher.ux.composable.theme.TrendingMoviesTheme
 import com.google.accompanist.coil.rememberCoilPainter
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect

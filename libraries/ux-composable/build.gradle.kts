@@ -10,12 +10,7 @@ android {
     defaultConfig {
         minSdk = Build.Android.minSdk
         targetSdk = Build.Android.targetSdk
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildTypes {
@@ -43,31 +38,9 @@ android {
 }
 
 dependencies {
-    implementation(projects.components.maincomponent)
-    implementation(projects.components.cache)
-    implementation(projects.libraries.viewmodelfactory)
-    implementation(projects.libraries.uxComposable)
-
-    implementation(Dependencies.Google.Dagger.dagger)
-    kapt(Dependencies.Google.Dagger.daggerCompiler)
-
-    implementation(Dependencies.Jetbrains.coroutinesCore)
-    implementation(Dependencies.Jetbrains.coroutinesAndroid)
-
     implementation(Dependencies.AndroidX.coreKtx)
     implementation(Dependencies.AndroidX.appcompat)
-    implementation(Dependencies.AndroidX.lifecycleRuntimeKtx)
-    implementation(Dependencies.AndroidX.lifecycleLiveDataKtx)
-    implementation(Dependencies.AndroidX.composeLiveData)
     implementation(Dependencies.AndroidX.composeUi)
     implementation(Dependencies.AndroidX.composeMaterial)
     implementation(Dependencies.AndroidX.composeUiTooling)
-    implementation(Dependencies.AndroidX.activityCompose)
-    implementation(Dependencies.Google.accompanist)
-
-    testImplementation(TestDependencies.junit)
-    androidTestImplementation(TestDependencies.AndroidX.junitExt)
-    androidTestImplementation(TestDependencies.AndroidX.espressoCore)
-    androidTestImplementation(TestDependencies.AndroidX.composeUiTest)
-
 }

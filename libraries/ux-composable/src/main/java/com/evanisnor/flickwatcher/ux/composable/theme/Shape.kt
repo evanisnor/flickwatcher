@@ -1,4 +1,4 @@
-package com.evanisnor.flickwatcher.trendingmovies.ui.theme
+package com.evanisnor.flickwatcher.ux.composable.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

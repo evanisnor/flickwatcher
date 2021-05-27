@@ -1,4 +1,4 @@
-package com.evanisnor.flickwatcher.trendingmovies.ui.theme
+package com.evanisnor.flickwatcher.ux.composable.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

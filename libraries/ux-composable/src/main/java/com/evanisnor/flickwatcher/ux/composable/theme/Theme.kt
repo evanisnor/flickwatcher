@@ -1,9 +1,10 @@
-package com.evanisnor.flickwatcher.trendingmovies.ui.theme
+package com.evanisnor.flickwatcher.ux.composable.theme
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.evanisnor.flickwatcher.ux.composable.theme.Typography
 
 private val ColorPalette = darkColors(
     primary = Color(0xFF66C3FF),
