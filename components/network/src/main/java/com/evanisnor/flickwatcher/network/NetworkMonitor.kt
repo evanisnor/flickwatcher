@@ -3,7 +3,6 @@ package com.evanisnor.flickwatcher.network
 import android.net.ConnectivityManager
 import android.net.Network
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
@@ -24,7 +23,6 @@ class NetworkMonitor @Inject constructor(
 
     private val networkStatus = MutableStateFlow(Status.Unknown)
 
-    @ExperimentalCoroutinesApi
     suspend fun networkState() = callbackFlow<Status> {
         trySend(networkStatus.value)
 

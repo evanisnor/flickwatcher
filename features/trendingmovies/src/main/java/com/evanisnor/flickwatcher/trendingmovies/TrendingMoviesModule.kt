@@ -6,14 +6,12 @@ import coil.ImageLoader
 import com.evanisnor.libraries.viewmodelfactory.ViewModelFactory
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.OkHttpClient
 
 
 @Module
 object TrendingMoviesModule {
 
-    @ExperimentalCoroutinesApi
     @Provides
     @TrendingMoviesScope
     fun viewModel(

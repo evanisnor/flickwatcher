@@ -11,7 +11,6 @@ import com.evanisnor.flickwatcher.cache.model.toLocalTrending
 import com.evanisnor.flickwatcher.network.TheMovieDbRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import java.time.LocalDate
@@ -32,7 +31,6 @@ class CacheRepository @Inject constructor(
 
     // region Image Base URL
 
-    @ExperimentalCoroutinesApi
     suspend fun getImageBaseUrl() = channelFlow<String> {
         dataStore.data.map { preferences ->
             val storedImageBaseUrl = preferences[ImageBaseUrlKey]
@@ -70,7 +68,6 @@ class CacheRepository @Inject constructor(
 
     // region Fetch Trending Movies
 
-    @ExperimentalCoroutinesApi
     fun getTrendingMovies(localDate: LocalDate = LocalDate.now()) = flow<List<Movie>> {
         dao.getTrendingMovies().collect { cachedMovies ->
 

@@ -1,44 +1,19 @@
+import com.evanisnor.flickwatcher.build.versions.Dependencies
+import com.evanisnor.flickwatcher.build.versions.TestDependencies
+
 plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("com.evanisnor.flickwatcher.library")
 }
 
-android {
-    compileSdk = Build.Android.compileSdk
-
-    defaultConfig {
-        minSdk = Build.Android.minSdk
-        targetSdk = Build.Android.targetSdk
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+flickwatcherLibrary {
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = GlobalVersion.compose
+        kotlinCompilerExtensionVersion = Dependencies.AndroidX.composeVersion
     }
 }
 

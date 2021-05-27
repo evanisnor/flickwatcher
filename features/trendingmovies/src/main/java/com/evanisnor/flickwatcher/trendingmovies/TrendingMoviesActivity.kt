@@ -34,7 +34,6 @@ import javax.inject.Inject
 @TrendingMoviesScope
 class TrendingMoviesActivity : FlickwatcherActivity() {
 
-    @ExperimentalCoroutinesApi
     @Composable
     fun TrendingMoviesScreen(
         movies: List<Movie>,
@@ -151,14 +150,12 @@ class TrendingMoviesActivity : FlickwatcherActivity() {
 
     // region Lifecycle
 
-    @ExperimentalCoroutinesApi
     @Inject
     lateinit var viewModel: TrendingMoviesViewModel
 
     @Inject
     lateinit var imageLoader: ImageLoader
 
-    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -179,7 +176,6 @@ class TrendingMoviesActivity : FlickwatcherActivity() {
         }
     }
 
-    @ExperimentalCoroutinesApi
     private suspend fun load() {
         // Combine the two flows and we reset the content when either changes omg 🤯
         viewModel.trendingMovies.combine(viewModel.networkStatus) { movies, status ->

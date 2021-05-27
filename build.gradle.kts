@@ -4,8 +4,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath(Build.Android.gradlePlugin)
-        classpath(Build.Kotlin.gradlePlugin)
+        classpath(com.evanisnor.flickwatcher.build.versions.Build.Android.gradlePlugin)
+        classpath(com.evanisnor.flickwatcher.build.versions.Build.Kotlin.gradlePlugin)
     }
 }
 

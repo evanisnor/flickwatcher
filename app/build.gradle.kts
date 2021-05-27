@@ -1,3 +1,6 @@
+import com.evanisnor.flickwatcher.build.versions.Build
+import com.evanisnor.flickwatcher.build.versions.Dependencies
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -11,8 +14,9 @@ android {
         applicationId = "com.evanisnor.flickwatcher"
         minSdk = Build.Android.minSdk
         targetSdk = Build.Android.targetSdk
-        versionCode = AppVersion.versionCode
-        versionName = AppVersion.versionName
+
+        versionCode = Build.Flickwatcher.versionCode
+        versionName = Build.Flickwatcher.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,8 +34,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
+        freeCompilerArgs =
+            listOf(
+                *freeCompilerArgs.toTypedArray(),
+                "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"
+            )
     }
 }
 
