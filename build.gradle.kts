@@ -8,7 +8,3 @@ buildscript {
         classpath(com.evanisnor.flickwatcher.build.versions.Build.Kotlin.gradlePlugin)
     }
 }
-
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
-}

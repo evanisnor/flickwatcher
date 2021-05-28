@@ -1,0 +1,25 @@
+version: 2.1
+
+orbs:
+  android: circleci/android@1.0
+
+jobs:
+  build:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-30-node
+        auth:
+          username: leadhead9
+          password: $DOCKERHUB_FLICKWATCHER_TOKEN
+    environment:
+      JVM_OPTS: -Xmx1024m
+    steps:
+      - checkout
+      - run:
+          command: ./gradlew :app:assembleRelease
+            -Pflickwatcher.signbuild=true
+            -Pflickwatcher.keystore.alias=flickwatcherapp
+            -Pflickwatcher.keystore.password=$FLICKWATCHER_KEYSTORE_PASSWORD
+            -Pflickwatcher.keystore.filepath=flickwatcherkeystoreci.jks
+            -Pflickwatcher.keystore.outpath=app/flickwatcherkeystoreci.jks
+            -Pflickwatcher.keystore.base64=$FLICKWATCHER_KEYSTORE_BASE64

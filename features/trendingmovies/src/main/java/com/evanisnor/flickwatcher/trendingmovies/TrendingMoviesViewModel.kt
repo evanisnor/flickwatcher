@@ -1,5 +1,6 @@
 package com.evanisnor.flickwatcher.trendingmovies
 
+import androidx.annotation.Keep
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.evanisnor.flickwatcher.cache.CacheRepository
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+@Keep
 class TrendingMoviesViewModel constructor(
     private val cacheRepository: CacheRepository,
     private val networkMonitor: NetworkMonitor
