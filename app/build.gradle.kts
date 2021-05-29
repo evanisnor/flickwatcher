@@ -1,4 +1,5 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.evanisnor.flickwatcher.build.booleanProperty
+import com.evanisnor.flickwatcher.build.stringProperty
 import com.evanisnor.flickwatcher.build.versions.Build
 import com.evanisnor.flickwatcher.build.versions.Dependencies
 
@@ -20,29 +21,25 @@ android {
         versionCode = Build.Flickwatcher.versionCode
         versionName = Build.Flickwatcher.versionName
 
+        manifestPlaceholders["TheMovieDbApiKey"] = stringProperty("flickwatcher.apikey.themoviedb")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    val properties = if (project.properties.containsKey("flickwatcher.signbuild")) {
-        project.properties
-    } else {
-        gradleLocalProperties(rootDir)
-    }
-
-    if (properties.containsKey("flickwatcher.signbuild")) {
+    if (booleanProperty("flickwatcher.signbuild")) {
         signingConfigs {
             create("release") {
-                keyAlias = properties["flickwatcher.keystore.alias"] as String
-                keyPassword = properties["flickwatcher.keystore.password"] as String
-                storePassword = properties["flickwatcher.keystore.password"] as String
-                storeFile = file(properties["flickwatcher.keystore.filepath"] as String)
+                keyAlias = stringProperty("flickwatcher.keystore.alias")
+                keyPassword = stringProperty("flickwatcher.keystore.password")
+                storePassword = stringProperty("flickwatcher.keystore.password")
+                storeFile = file(stringProperty("flickwatcher.keystore.filepath"))
             }
         }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             signingConfig = signingConfigs.findByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

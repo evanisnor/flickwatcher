@@ -1,6 +1,7 @@
 package com.evanisnor.flickwatcher.network
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import coil.util.CoilUtils
 import com.evanisnor.flickwatcher.network.interceptors.AuthorizationInterceptor
@@ -13,9 +14,21 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Qualifier
 
 @Module
 object NetworkModule {
+
+    @Qualifier
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class TheMovieDbApiKey
+
+    @Provides
+    @NetworkScope
+    @TheMovieDbApiKey
+    fun theMovieDbApiKey(context: Context) =
+        context.packageManager.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
+            .metaData.getString("com.evanisnor.flickwatcher.apikey.themoviedb") ?: ""
 
     @Provides
     @NetworkScope

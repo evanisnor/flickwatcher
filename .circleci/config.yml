@@ -17,6 +17,7 @@ jobs:
       - checkout
       - run:
           command: ./gradlew writeKeystoreFile :app:assembleRelease
+            -Pflickwatcher.apikey.themoviedb=$FLICKWATCHER_APIKEY_THEMOVIEDB
             -Pflickwatcher.signbuild=true
             -Pflickwatcher.keystore.alias=flickwatcherapp
             -Pflickwatcher.keystore.password=$FLICKWATCHER_KEYSTORE_PASSWORD

@@ -15,7 +15,8 @@ import retrofit2.http.Path
 interface TheMovieDbService {
 
     companion object {
-        const val baseUrl = "https://api.themoviedb.org/"
+        const val host = "api.themoviedb.org"
+        const val baseUrl = "https://$host/"
     }
 
     @GET("/3/configuration")
