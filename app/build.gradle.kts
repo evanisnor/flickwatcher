@@ -80,7 +80,6 @@ tasks.register(
 )
 
 tasks.register("publish", Exec::class) {
-    commandLine("bundle", "install")
     commandLine("bundle", "exec", "fastlane", "supply",
         "--package_name", Build.Android.packageName,
         "--aab", "build/outputs/bundle/release/app-release.aab",
