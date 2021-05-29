@@ -16,7 +16,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: ./gradlew writeKeystoreFile :app:assembleRelease
+          command: ./gradlew writeKeystoreFile :app:assembleRelease :app:bundleRelease
             -Pflickwatcher.apikey.themoviedb=$FLICKWATCHER_APIKEY_THEMOVIEDB
             -Pflickwatcher.signbuild=true
             -Pflickwatcher.keystore.alias=flickwatcherapp
@@ -26,3 +26,5 @@ jobs:
             -Pflickwatcher.keystore.base64=$FLICKWATCHER_KEYSTORE_BASE64
       - store_artifacts:
           path: app/build/outputs/apk/release/app-release.apk
+      - store_artifacts:
+          path: app/build/outputs/bundle/release/app-release.aab
