@@ -24,3 +24,5 @@ jobs:
             -Pflickwatcher.keystore.filepath=flickwatcherkeystoreci.jks
             -Pflickwatcher.keystore.outpath=app/flickwatcherkeystoreci.jks
             -Pflickwatcher.keystore.base64=$FLICKWATCHER_KEYSTORE_BASE64
+      - store_artifacts:
+          path: app/build/outputs/apk/release/app-release.apk
