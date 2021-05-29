@@ -9,15 +9,15 @@ abstract class FlickwatcherKeystoreTask : DefaultTask() {
 
     @TaskAction
     fun writeKeystoreFileToDisk() {
-        if (!project.hasProperty("flickwatcher.keystore.outpath") ||
-            !project.hasProperty("flickwatcher.keystore.base64")
+        if (!project.hasPropertyAnywhere("flickwatcher.keystore.outpath") ||
+            !project.hasPropertyAnywhere("flickwatcher.keystore.base64")
         ) {
             println("Keystore properties not provided. Skipping.")
             return
         }
 
-        val keystoreOutPath = project.properties["flickwatcher.keystore.outpath"] as String
-        val keystoreBase64 = project.properties["flickwatcher.keystore.base64"] as String
+        val keystoreOutPath = project.stringProperty("flickwatcher.keystore.outpath")
+        val keystoreBase64 = project.stringProperty("flickwatcher.keystore.base64")
 
         File(keystoreOutPath).apply {
             writeBytes(Base64.getDecoder().decode(keystoreBase64))

@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.evanisnor.flickwatcher.build.booleanProperty
 import com.evanisnor.flickwatcher.build.stringProperty
 import com.evanisnor.flickwatcher.build.versions.Build
@@ -14,7 +15,7 @@ android {
     compileSdk = Build.Android.compileSdk
 
     defaultConfig {
-        applicationId = "com.evanisnor.flickwatcher"
+        applicationId = Build.Android.packageName
         minSdk = Build.Android.minSdk
         targetSdk = Build.Android.targetSdk
 
@@ -73,15 +74,36 @@ tasks.register(
     com.evanisnor.flickwatcher.build.FlickwatcherKeystoreTask::class
 )
 
+tasks.register(
+    "writePlayStoreCredentials",
+    com.evanisnor.flickwatcher.build.FlickwatcherPlayStoreCredentialsTask::class
+)
+
+tasks.register("publish", Exec::class) {
+    commandLine("fastlane", "supply",
+        "--package_name", Build.Android.packageName,
+        "--aab", "build/outputs/bundle/release/app-release.aab",
+        "--track", "alpha",
+        "--release_status", "draft",
+        "--json_key", "credentials.json"
+    )
+}.dependsOn("bundleRelease").dependsOn("writePlayStoreCredentials")
+
 tasks.register("removeKeystoreFiles", Delete::class) {
     delete(fileTree(".").matching {
         include("**/*.jks")
     })
 }
 
+tasks.register("removeCredentialsFile", Delete::class) {
+    delete(fileTree(".").matching {
+        include("**/credentials.json")
+    })
+}
+
 afterEvaluate {
     tasks.findByPath("validateSigningRelease")?.dependsOn("writeKeystoreFile")
-    tasks.findByPath("clean")?.dependsOn("removeKeystoreFiles")
+    tasks.findByPath("clean")?.dependsOn("removeKeystoreFiles", "removeCredentialsFile")
 }
 
 dependencies {

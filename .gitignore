@@ -15,4 +15,5 @@
 .externalNativeBuild
 local.properties
 **/*.jks
+credentials.json
 !buildSrc/src/main/kotlin/com/evanisnor/flickwatcher/build
