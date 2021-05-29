@@ -6,6 +6,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("com.evanisnor.flickwatcher.build")
 }
 
 android {
@@ -75,10 +76,15 @@ tasks.register(
     com.evanisnor.flickwatcher.build.FlickwatcherKeystoreTask::class
 )
 
+tasks.register("removeKeystoreFiles", Delete::class) {
+    delete(fileTree(".").matching {
+        include("**/*.jks")
+    })
+}
+
 afterEvaluate {
-    tasks.named("validateSigningRelease").configure {
-        dependsOn("writeKeystoreFile")
-    }
+    tasks.findByPath("validateSigningRelease")?.dependsOn("writeKeystoreFile")
+    tasks.findByPath("clean")?.dependsOn("removeKeystoreFiles")
 }
 
 dependencies {

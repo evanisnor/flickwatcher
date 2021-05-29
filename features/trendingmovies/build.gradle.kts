@@ -5,7 +5,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("com.evanisnor.flickwatcher.library")
+    id("com.evanisnor.flickwatcher.build")
 }
 
 flickwatcherLibrary {
