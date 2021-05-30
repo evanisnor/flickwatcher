@@ -22,12 +22,12 @@ android {
         versionCode = Build.Flickwatcher.versionCode
         versionName = Build.Flickwatcher.versionName
 
-        manifestPlaceholders["TheMovieDbApiKey"] = stringProperty("flickwatcher.apikey.themoviedb")
+        manifestPlaceholders["TheMovieDbApiKey"] = stringProperty("flickwatcher.apikey.themoviedb", "")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    if (booleanProperty("flickwatcher.signbuild")) {
+    if (booleanProperty("flickwatcher.signbuild", false)) {
         signingConfigs {
             create("release") {
                 keyAlias = stringProperty("flickwatcher.keystore.alias")

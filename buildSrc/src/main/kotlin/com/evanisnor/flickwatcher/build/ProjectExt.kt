@@ -6,45 +6,51 @@ import org.gradle.api.Project
 fun Project.hasPropertyAnywhere(key: String) =
     properties.containsKey(key) || gradleLocalProperties(rootDir).containsKey(key)
 
-fun Project.stringProperty(key: String, defaultValue: String): String {
-    val property = if (properties.containsKey(key)) {
-        properties[key]
-    } else {
-        gradleLocalProperties(rootDir)[key]
-    }
+fun Project.getPropertyAnywhere(key: String) = if (properties.containsKey(key)) {
+    properties[key]
+} else {
+    gradleLocalProperties(rootDir)[key]
+}
 
-    return if (property is String && property.isNotBlank()) {
-        property
+fun Project.stringProperty(key: String): String {
+    val value = stringProperty(key, "")
+    if (value.isBlank()) {
+        throw Exception("Property $key is not defined")
+    }
+    return value
+}
+
+fun Project.stringProperty(key: String, defaultValue: String): String {
+    val value = getPropertyAnywhere(key)
+    return if (value is String && value.isNotBlank()) {
+        value
     } else {
         defaultValue
     }
 }
 
-fun Project.stringProperty(key: String): String {
-    val property = if (properties.containsKey(key)) {
-        properties[key]
-    } else {
-        gradleLocalProperties(rootDir)[key]
-    }
-
-    if (property is String && property.isNotBlank()) {
-        return property
-    }
-
-    throw Exception("Property $key is not defined")
-}
-
 fun Project.booleanProperty(key: String): Boolean {
-    val property = if (properties.containsKey(key)) {
-        properties[key]
+    if (!hasPropertyAnywhere(key)) {
+        throw Exception("Property $key is not defined")
+    }
+
+    val value = getPropertyAnywhere(key)
+
+    return if (value is String && value.isValidBoolean()) {
+        value.toBoolean()
     } else {
-        gradleLocalProperties(rootDir)[key]
+        throw Exception("Value of property $key cannot be cast to boolean: $value")
     }
-
-    if (property is String && property.isNotBlank() && (
-            property == "true" || property == "false")) {
-        return property.toBoolean()
-    }
-
-    throw Exception("Property $key is not defined")
 }
+
+fun Project.booleanProperty(key: String, defaultValue: Boolean): Boolean {
+    val value = getPropertyAnywhere(key)
+
+    return if (value is String && value.isValidBoolean()) {
+        value.toBoolean()
+    } else {
+        defaultValue
+    }
+}
+
+fun String.isValidBoolean() = isNotBlank() && (this == "true" || this == "false")
