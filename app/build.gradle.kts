@@ -9,6 +9,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("com.evanisnor.flickwatcher.build")
+    id("com.evanisnor.gradle.semver")
 }
 
 android {
@@ -18,9 +19,6 @@ android {
         applicationId = Build.Android.packageName
         minSdk = Build.Android.minSdk
         targetSdk = Build.Android.targetSdk
-
-        versionCode = Build.Flickwatcher.versionCode
-        versionName = Build.Flickwatcher.versionName
 
         manifestPlaceholders["TheMovieDbApiKey"] = stringProperty("flickwatcher.apikey.themoviedb", "")
 

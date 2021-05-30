@@ -5,8 +5,6 @@ import com.evanisnor.flickwatcher.build.versions.Build
 import org.gradle.api.JavaVersion
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
-import org.gradle.plugin.use.PluginDependenciesSpec
-import org.gradle.plugin.use.PluginDependencySpec
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 class FlickwatcherLibraryExtension(
