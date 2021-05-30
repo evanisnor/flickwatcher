@@ -23,13 +23,14 @@ jobs:
         run: |
           gem install bundler
           bundle install
-      - name: Assemble Release
+      - name: Assemble Release and Deploy to Google Play alpha track
         env:
           apikey_themoviedb: ${{ secrets.APIKEY_THEMOVIEDB }}
           keystore_password: ${{ secrets.KEYSTORE_PASSWORD }}
           keystore_base64: ${{ secrets.KEYSTORE_BASE64 }}
+          play_store_credentials: ${{ secrets.PLAY_STORE_CREDENTIALS_BASE64 }}
         run: >
-          ./gradlew :app:assembleRelease :app:bundleRelease
+          ./gradlew :app:assembleRelease :app:bundleRelease publish
           -Pflickwatcher.apikey.themoviedb=$apikey_themoviedb
           -Pflickwatcher.signbuild=true
           -Pflickwatcher.keystore.alias=flickwatcherapp
@@ -37,6 +38,8 @@ jobs:
           -Pflickwatcher.keystore.filepath=flickwatcherkeystoreci.jks
           -Pflickwatcher.keystore.outpath=app/flickwatcherkeystoreci.jks
           -Pflickwatcher.keystore.base64=$keystore_base64
+          -Pflickwatcher.publish.credentials.outpath=app/credentials.json
+          -Pflickwatcher.publish.credentials.base64=$play_store_credentials
       - name: Archive Release APK
         uses: actions/upload-artifact@v2
         with:
@@ -47,10 +50,3 @@ jobs:
         with:
           name: Release AAB
           path: app/build/outputs/bundle/release/app-release.aab
-      - name: Deploy to Google Play Alpha Track
-        env:
-          play_store_credentials: ${{ secrets.PLAY_STORE_CREDENTIALS_BASE64 }}
-        run: >
-          ./gradlew publish
-          -Pflickwatcher.publish.credentials.outpath=app/credentials.json
-          -Pflickwatcher.publish.credentials.base64=$play_store_credentials
