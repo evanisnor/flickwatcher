@@ -45,14 +45,14 @@ class SemanticVersion(
         nextPatch(isUntagged = true)
     }
 
-    fun isValid() = major >= 0 && minor in 0..999 && patch in 0..999 && candidate in 0..999
+    fun isValid() = major >= 0 && minor in 0..99 && patch in 0..99 && candidate in 0..99
 
     fun toInt(): Int =
         Integer.parseInt(
             "$major" +
-                minor.toString().padStart(3, '0') +
-                patch.toString().padStart(3, '0') +
-                candidate.toString().padStart(3, '0'))
+                minor.toString().padStart(2, '0') +
+                patch.toString().padStart(2, '0') +
+                candidate.toString().padStart(2, '0'))
 
     override fun toString(): String {
         val versionString = if (candidate > 0) {
