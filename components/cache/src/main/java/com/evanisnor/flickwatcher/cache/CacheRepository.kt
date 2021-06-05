@@ -11,23 +11,26 @@ import com.evanisnor.flickwatcher.cache.model.toLocalTrending
 import com.evanisnor.flickwatcher.network.TheMovieDbRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
 @CacheScope
 class CacheRepository @Inject constructor(
     private val dispatcher: CoroutineDispatcher,
-    private val cacheCoroutineScope: CoroutineScope,
     private val theMovieDbRepository: TheMovieDbRepository,
     private val dao: MovieDao,
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
 ) {
 
     companion object {
         val ImageBaseUrlKey = stringPreferencesKey("ImageBaseUrl")
     }
+
+    private val coroutineScope: CoroutineScope = CoroutineScope(dispatcher + SupervisorJob())
 
     // region Image Base URL
 
@@ -45,7 +48,7 @@ class CacheRepository @Inject constructor(
             } else {
                 send(storedImageBaseUrl)
             }
-        }.stateIn(cacheCoroutineScope)
+        }.stateIn(coroutineScope)
 
         awaitClose { }
     }.flowOn(dispatcher)
@@ -78,10 +81,12 @@ class CacheRepository @Inject constructor(
 
             // If there were no cached movies, or if the last known date is old, then attempt
             // to fetch latest from network.
-            if (cachedMovies.isEmpty() ||
-                cachedMovies.any { it.trendingDate?.isBefore(localDate) == true }) {
+            coroutineScope.launch {
+                if (cachedMovies.isEmpty() ||
+                    cachedMovies.any { it.trendingDate?.isBefore(localDate) == true }) {
 
-                fetchTrendingMovies()
+                    fetchTrendingMovies()
+                }
             }
         }
     }.flowOn(dispatcher)

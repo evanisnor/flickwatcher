@@ -22,11 +22,6 @@ object CacheModule {
 
     @Provides
     @CacheScope
-    fun cacheCoroutineScope(dispatcher: CoroutineDispatcher) =
-        CoroutineScope(dispatcher + SupervisorJob())
-
-    @Provides
-    @CacheScope
     fun movieDatabase(context: Context) = Room.databaseBuilder(
         context,
         MovieDatabase::class.java,
@@ -41,11 +36,11 @@ object CacheModule {
 
     @Provides
     @CacheScope
-    fun dataStore(context: Context, cacheCoroutineScope: CoroutineScope) =
+    fun dataStore(context: Context, dispatcher: CoroutineDispatcher) =
         PreferenceDataStoreFactory.create(
             corruptionHandler = null,
             migrations = listOf(),
-            scope = cacheCoroutineScope
+            scope = CoroutineScope(dispatcher + SupervisorJob())
         ) {
             context.preferencesDataStoreFile("Cache")
         }
