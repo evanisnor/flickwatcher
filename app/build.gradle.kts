@@ -1,7 +1,7 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.evanisnor.flickwatcher.build.booleanProperty
 import com.evanisnor.flickwatcher.build.stringProperty
-import com.evanisnor.flickwatcher.build.versions.Build
+import com.evanisnor.flickwatcher.build.versions.App
 import com.evanisnor.flickwatcher.build.versions.Dependencies
 
 plugins {
@@ -13,12 +13,12 @@ plugins {
 }
 
 android {
-    compileSdk = Build.Android.compileSdk
+    compileSdk = App.Android.compileSdk
 
     defaultConfig {
-        applicationId = Build.Android.packageName
-        minSdk = Build.Android.minSdk
-        targetSdk = Build.Android.targetSdk
+        applicationId = App.Android.packageName
+        minSdk = App.Android.minSdk
+        targetSdk = App.Android.targetSdk
 
         manifestPlaceholders["TheMovieDbApiKey"] = stringProperty("flickwatcher.apikey.themoviedb", "")
 
@@ -79,7 +79,7 @@ tasks.register(
 
 tasks.register("publish", Exec::class) {
     commandLine("bundle", "exec", "fastlane", "supply",
-        "--package_name", Build.Android.packageName,
+        "--package_name", App.Android.packageName,
         "--aab", "build/outputs/bundle/release/app-release.aab",
         "--track", "alpha",
         "--release_status", "draft",

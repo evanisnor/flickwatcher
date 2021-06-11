@@ -1,11 +1,6 @@
 package com.evanisnor.flickwatcher.build.versions
 
-object Build {
-
-    object Flickwatcher {
-        const val versionCode = 3
-        const val versionName = "0.0.2"
-    }
+object App {
 
     object Android {
         const val packageName = "com.evanisnor.flickwatcher"

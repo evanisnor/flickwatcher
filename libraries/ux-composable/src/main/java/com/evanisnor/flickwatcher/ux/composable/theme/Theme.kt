@@ -4,16 +4,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.evanisnor.flickwatcher.ux.composable.theme.Typography
 
 private val ColorPalette = darkColors(
-    primary = Color(0xFF66C3FF),
-    secondary = Color(0xFF53D8FB),
-    background = Color(0xFF121212),
-    surface = Color.Black,
+    primary = Color(0xFFFFC850),
+    secondary = Color(0xFFFFC850),
+    background = Color(0xFF1B1B1E),
+    surface = Color(0xFF4E4637),
     error = Color(0xFFD4AFB9),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
+    onPrimary = Color.Black,
+    onSecondary = Color.Black,
     onBackground = Color.White,
     onSurface = Color.White,
     onError = Color.Black

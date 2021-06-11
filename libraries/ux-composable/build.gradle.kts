@@ -21,5 +21,6 @@ dependencies {
     implementation(Dependencies.AndroidX.appcompat)
     implementation(Dependencies.AndroidX.composeUi)
     implementation(Dependencies.AndroidX.composeMaterial)
+    implementation(Dependencies.AndroidX.composeFoundation)
     implementation(Dependencies.AndroidX.composeUiTooling)
 }

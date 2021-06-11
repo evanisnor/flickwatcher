@@ -1,7 +1,7 @@
 package com.evanisnor.flickwatcher.build
 
 import com.android.build.api.dsl.LibraryExtension
-import com.evanisnor.flickwatcher.build.versions.Build
+import com.evanisnor.flickwatcher.build.versions.App
 import org.gradle.api.JavaVersion
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
@@ -12,11 +12,11 @@ class FlickwatcherLibraryExtension(
 ) : LibraryExtension by libraryExtension {
 
     init {
-        compileSdk = Build.Android.compileSdk
+        compileSdk = App.Android.compileSdk
 
         defaultConfig {
-            minSdk = Build.Android.minSdk
-            targetSdk = Build.Android.targetSdk
+            minSdk = App.Android.minSdk
+            targetSdk = App.Android.targetSdk
             consumerProguardFiles("consumer-rules.pro")
         }
 
@@ -39,7 +39,8 @@ class FlickwatcherLibraryExtension(
             freeCompilerArgs =
                 listOf(
                     *freeCompilerArgs.toTypedArray(),
-                    "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"
+                    "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                    "-Xuse-experimental=androidx.compose.runtime.ExperimentalComposeApi"
                 )
         }
     }

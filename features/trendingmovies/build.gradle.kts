@@ -33,11 +33,13 @@ dependencies {
     implementation(Dependencies.AndroidX.appcompat)
     implementation(Dependencies.AndroidX.lifecycleRuntimeKtx)
     implementation(Dependencies.AndroidX.lifecycleLiveDataKtx)
-    implementation(Dependencies.AndroidX.composeLiveData)
+
     implementation(Dependencies.AndroidX.composeUi)
     implementation(Dependencies.AndroidX.composeMaterial)
     implementation(Dependencies.AndroidX.composeUiTooling)
     implementation(Dependencies.AndroidX.activityCompose)
+    implementation(Dependencies.AndroidX.constraintLayoutCompose)
+
     implementation(Dependencies.Google.accompanist)
 
     testImplementation(TestDependencies.junit)

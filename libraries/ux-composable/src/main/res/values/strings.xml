@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="disconnected_title">Sorry!</string>
+    <string name="disconnected_message">Connect to WiFi or mobile network to see today\'s trending movies</string>
+</resources>

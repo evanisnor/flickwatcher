@@ -21,18 +21,17 @@ object Dependencies {
 
         const val datastorePreferences = "androidx.datastore:datastore-preferences:1.0.0-beta01"
 
-        const val composeVersion = "1.0.0-beta07"
+        const val composeVersion = "1.0.0-beta08"
         const val composeUi = "androidx.compose.ui:ui:$composeVersion"
         const val composeMaterial = "androidx.compose.material:material:$composeVersion"
         const val composeUiTooling = "androidx.compose.ui:ui-tooling:$composeVersion"
-        const val composeLiveData =
-            "androidx.compose.runtime:runtime-livedata:$composeVersion"
-        const val activityCompose = "androidx.activity:activity-compose:1.3.0-alpha08"
+        const val composeFoundation ="androidx.compose.foundation:foundation:$composeVersion"
+        const val activityCompose = "androidx.activity:activity-compose:1.3.0-beta01"
+        const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha07"
     }
 
     object Google {
-        const val material = "com.google.android.material:material:1.3.0"
-        const val accompanist = "com.google.accompanist:accompanist-coil:0.10.0"
+        const val accompanist = "com.google.accompanist:accompanist-coil:0.11.1"
 
         object Dagger {
             private const val daggerVersion = "2.35.1"
@@ -58,7 +57,7 @@ object Dependencies {
     }
 
     object Coil {
-        const val coilBase = "io.coil-kt:coil-base:1.1.1"
+        const val coilBase = "io.coil-kt:coil-base:1.2.2"
     }
 
 }
